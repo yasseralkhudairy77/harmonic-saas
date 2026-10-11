@@ -109,9 +109,28 @@ app.get('/sync/status', async (req, res) => {
   }
 });
 
-async function ensureDatabasePatches() {
+async function ensureDatabaseBootstrap() {
   try {
     const db = require('./db');
+    const tableCheck = await db.query(`
+      SELECT EXISTS (
+        SELECT FROM information_schema.tables 
+        WHERE table_schema = 'public' AND table_name = 'rooms'
+      );
+    `);
+    const tablesExist = tableCheck.rows[0]?.exists === true;
+
+    if (!tablesExist) {
+      console.log('[DB-BOOTSTRAP] Tabel database belum ditemukan. Menjalankan DDL schema & restorasi dataset...');
+      const initDatabase = require('./db/init');
+      await initDatabase();
+      const restoreBackup = require('./db/restore-backup');
+      await restoreBackup();
+      console.log('[DB-BOOTSTRAP] Inisialisasi database dan dataset selesai sukses!');
+    } else {
+      console.log('[DB-BOOTSTRAP] Tabel database sudah terverifikasi.');
+    }
+
     await db.query(`
       ALTER TABLE stock_movements ALTER COLUMN reference_type TYPE VARCHAR(50);
       ALTER TABLE stock_movements DROP CONSTRAINT IF EXISTS stock_movements_reference_type_check;
@@ -121,13 +140,13 @@ async function ensureDatabasePatches() {
     console.log('[DB] Schema constraint stock_movements_reference_type_check verified.');
   } catch (err) {
     if (err.code !== 'ECONNREFUSED' && !err.message.includes('ECONNREFUSED') && !err.message.includes('DATABASE_OFFLINE')) {
-      console.warn('[DB] Notice verifying database constraints:', err.message);
+      console.warn('[DB] Notice verifying/bootstrapping database:', err.message);
     }
   }
 }
 
 function startServer(port = PORT, bindHost = BIND_HOST) {
-  ensureDatabasePatches();
+  ensureDatabaseBootstrap();
   if (process.env.ENABLE_LOCAL_SYNC_WORKER === '1') {
     startSyncWorker(parseInt(process.env.SYNC_INTERVAL_MS || '30000', 10));
   }
