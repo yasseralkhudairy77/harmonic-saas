@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Karaoke Mode Prototype</title>
+    <link rel="icon" href="data:," />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #05070a;
+        --bar-bg: #101820;
+        --bar-line: rgba(255, 255, 255, 0.16);
+        --text: #f8fbff;
+        --muted: #b9c6cf;
+        --normal: #58d9ff;
+        --warning: #ffd166;
+        --danger: #ff6b6b;
+        --idle: #9fb4c4;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+
+      body {
+        overflow: hidden;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          Inter,
+          "Segoe UI",
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+      }
+
+      .karaoke-mode {
+        display: grid;
+        grid-template-rows: minmax(86px, 14vh) 1fr;
+        width: 100vw;
+        height: 100vh;
+        min-width: 0;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      .timer-bar {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: clamp(14px, 3vw, 44px);
+        min-width: 0;
+        min-height: 0;
+        overflow: hidden;
+        padding: clamp(12px, 2vw, 24px) clamp(16px, 4vw, 54px);
+        border-bottom: 1px solid var(--bar-line);
+        background: var(--bar-bg);
+      }
+
+      .room-block,
+      .time-block {
+        min-width: 0;
+      }
+
+      .status-label,
+      .notice-text {
+        margin: 0;
+        color: var(--muted);
+        font-size: clamp(12px, 1.45vw, 18px);
+        font-weight: 750;
+        line-height: 1.25;
+      }
+
+      .room-name {
+        margin: 2px 0 0;
+        overflow-wrap: anywhere;
+        color: var(--text);
+        font-size: clamp(24px, 4.1vw, 56px);
+        font-weight: 920;
+        line-height: 1.05;
+      }
+
+      .time-block {
+        text-align: right;
+      }
+
+      .timer-text {
+        color: var(--text);
+        font-variant-numeric: tabular-nums;
+        font-size: clamp(34px, 5.6vw, 82px);
+        font-weight: 950;
+        line-height: 0.96;
+        white-space: nowrap;
+      }
+
+      .notice-text {
+        min-height: 1.25em;
+      }
+
+      .video-stage {
+        position: relative;
+        z-index: 1;
+        min-width: 0;
+        min-height: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #000;
+      }
+
+      .video-stage iframe {
+        display: block;
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        border: 0;
+      }
+
+      .karaoke-mode.normal .timer-bar {
+        border-bottom-color: rgba(88, 217, 255, 0.7);
+        box-shadow: inset 0 -4px 0 rgba(88, 217, 255, 0.45);
+      }
+
+      .karaoke-mode.warning .timer-bar {
+        border-bottom-color: rgba(255, 209, 102, 0.75);
+        box-shadow: inset 0 -4px 0 rgba(255, 209, 102, 0.65);
+      }
+
+      .karaoke-mode.expired .timer-bar {
+        border-bottom-color: rgba(255, 107, 107, 0.75);
+        box-shadow: inset 0 -4px 0 rgba(255, 107, 107, 0.65);
+      }
+
+      .karaoke-mode.reconnecting .notice-text {
+        color: var(--warning);
+      }
+
+      .karaoke-mode.normal .timer-text {
+        color: var(--normal);
+      }
+
+      .karaoke-mode.warning .timer-text {
+        color: var(--warning);
+      }
+
+      .karaoke-mode.expired .timer-text {
+        color: var(--danger);
+      }
+
+      @media (max-width: 720px) {
+        .karaoke-mode {
+          grid-template-rows: minmax(92px, 15vh) 1fr;
+        }
+
+        .timer-bar {
+          gap: 10px;
+          padding: 12px 14px;
+        }
+
+        .status-label,
+        .notice-text {
+          font-size: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main id="karaokeRoot" class="karaoke-mode loading" aria-live="polite">
+      <header class="timer-bar">
+        <div class="room-block">
+          <p id="statusLabel" class="status-label">Sedang menyiapkan display...</p>
+          <h1 id="roomName" class="room-name">Karaoke Room</h1>
+        </div>
+
+        <div class="time-block">
+          <div id="timerText" class="timer-text">00:00:00</div>
+          <p id="noticeText" class="notice-text"></p>
+        </div>
+      </header>
+
+      <section class="video-stage" aria-label="Video karaoke YouTube">
+        <!-- TODO: Fase berikutnya menambahkan pencarian lagu via HP, keyboard TV, atau remote. -->
+        <iframe
+          title="YouTube karaoke prototype video"
+          src="https://www.youtube.com/embed/M7lc1UVf-VE?fs=0&rel=0&modestbranding=1&playsinline=1"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        ></iframe>
+      </section>
+    </main>
+
+    <script type="module" src="js/karaoke-mode.js"></script>
+  </body>
+</html>

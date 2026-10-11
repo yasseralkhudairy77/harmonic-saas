@@ -1,0 +1,555 @@
+/* ==========================================================================
+   HARMONIC NIGHTLIFE MANAGEMENT - SAP FIORI ENTERPRISE LOOK (CARBON & GOLD)
+   Sistem Header Terpadu (Freeze ShellBar & IconTabBar), Telemetri, & MessageStrip
+   Ambience: Pure Neutral Carbon (#101216 / #14161b) + Executive Gold (#e2b85c)
+   Bebas dari segala rona biru dingin (slate navy)
+   ========================================================================== */
+
+/* 1. APP SHELL TOP (STICKY FREEZE CONTAINER)
+   Membungkus Header Bar dan Tab Navigasi agar tetap terkunci di bagian atas
+   saat halaman di-skrol ke bawah, sehingga kasir dapat memilih menu kapan saja. */
+.app-shell-top {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background: #101216;
+  border-bottom: 1px solid rgba(226, 184, 92, 0.24);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.55);
+}
+
+/* 2. SAP FIORI SHELLBAR (.app-header) */
+.app-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  height: 48px;
+  min-height: 48px;
+  padding: 0 clamp(16px, 3.5vw, 40px);
+  background: #101216;
+  border-bottom: 1px solid #1a1d22;
+  box-sizing: border-box;
+}
+
+/* Brand Section (Opsi B: Logo HARMONIC Bersih Proporsional) */
+.app-brand {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  flex: 0 0 auto;
+}
+
+.app-brand-logo-img {
+  display: block;
+  height: 28px;
+  width: auto;
+  max-width: 175px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.6));
+}
+
+/* Header Controls Cluster (Telemetri & Kontrol Kanan) */
+.app-header-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+/* Live Operational Clock */
+.app-live-clock {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 4px;
+  background: #181b20;
+  border: 1px solid #272a32;
+  color: #e2e8f0;
+  font-size: 0.8rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* Telemetry Server Status Badge */
+.app-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  background: #181b20;
+  border: 1px solid #272a32;
+  color: #9aa1ad;
+  transition: all 0.15s ease;
+}
+
+.app-badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex: 0 0 7px;
+  background: currentColor;
+}
+
+.app-badge.live {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #34d399;
+}
+
+.app-badge.live .app-badge-dot {
+  background: #10b981;
+}
+
+.app-badge.error {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #f87171;
+}
+
+.app-badge.error .app-badge-dot {
+  background: #ef4444;
+}
+
+.app-badge.mock {
+  background: rgba(148, 163, 184, 0.1);
+  border-color: rgba(148, 163, 184, 0.3);
+  color: #9aa1ad;
+}
+
+/* ==========================================================================
+   Operator Session Widget (Unified Capsule - SAP Fiori Executive)
+   Satu kapsul terpadu (32px), sejajar dengan live clock & status telemetry,
+   menghilangkan tabrakan box bertumpuk antara background dan badge operator.
+   ========================================================================== */
+.operator-session {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  min-height: 32px;
+  max-height: 32px;
+  padding: 0 4px 0 10px;
+  border-radius: 4px;
+  background: #181b20;
+  border: 1px solid #272a32;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  box-sizing: border-box;
+  flex: 0 0 auto;
+}
+
+.operator-session[hidden] {
+  display: none !important;
+}
+
+/* Reset tuntas dari style.css box badge lama agar tidak terjadi tabrakan box ganda */
+.operator-session-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #e2e8f0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: none !important;
+}
+
+/* Ikon operator bernuansa Executive Gold */
+.operator-session-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #e2b85c;
+  opacity: 0.9;
+  flex: 0 0 auto;
+}
+
+/* Teks nama operator */
+.operator-session-name {
+  color: #f1f5f9;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+}
+
+/* Mini-tag peran operator (Owner, Kasir, Manager) - aksen gold elegan */
+.operator-session-role {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: rgba(226, 184, 92, 0.12);
+  border: 1px solid rgba(226, 184, 92, 0.28);
+  color: #ffd77a;
+  font-size: 0.7rem;
+  font-weight: 750;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+/* Garis pemisah hairline vertikal halus sebelum tombol Logout */
+.operator-session-divider {
+  width: 1px;
+  height: 16px;
+  background: #272a32;
+  margin: 0 2px;
+  flex: 0 0 1px;
+}
+
+/* Tombol Logout mini-pill terintegrasi (24px tinggi di dalam kapsul 32px) */
+.operator-logout-button,
+.btn.operator-logout-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0 !important;
+  height: 24px !important;
+  max-height: 24px !important;
+  padding: 0 8px !important;
+  border-radius: 3px;
+  background: rgba(239, 68, 68, 0.14) !important;
+  border: 1px solid rgba(239, 68, 68, 0.35) !important;
+  color: #fca5a5 !important;
+  font-family: inherit;
+  font-size: 0.74rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  box-shadow: none !important;
+}
+
+.operator-logout-button:hover,
+.btn.operator-logout-button:hover {
+  background: rgba(239, 68, 68, 0.28) !important;
+  border-color: rgba(239, 68, 68, 0.6) !important;
+  color: #ffffff !important;
+}
+
+.operator-logout-button:focus-visible,
+.btn.operator-logout-button:focus-visible {
+  outline: 2px solid #ef4444;
+  outline-offset: 1px;
+  background: rgba(239, 68, 68, 0.32) !important;
+  border-color: #ef4444 !important;
+  color: #ffffff !important;
+}
+
+.operator-logout-button:active,
+.btn.operator-logout-button:active {
+  transform: scale(0.97);
+}
+
+/* ==========================================================================
+   3. SAP FIORI ICONTABBAR (.app-tabs)
+   Flat tab bar dengan active bottom indicator underline 3px (Executive Gold #e2b85c)
+   ========================================================================== */
+.app-tabs {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  height: 42px;
+  min-height: 42px;
+  margin: 0;
+  padding: 0 clamp(16px, 3.5vw, 40px);
+  background: #14161b;
+  border: none;
+  border-radius: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(226, 184, 92, 0.25) transparent;
+}
+
+.app-tabs::-webkit-scrollbar {
+  height: 3px;
+}
+
+.app-tabs::-webkit-scrollbar-thumb {
+  background: rgba(226, 184, 92, 0.3);
+  border-radius: 2px;
+}
+
+.app-tab-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  flex: 0 0 auto;
+  height: 42px;
+  padding: 0 14px;
+  border: none;
+  border-bottom: 3px solid transparent;
+  border-radius: 3px 3px 0 0;
+  background: transparent;
+  color: #9aa1ad;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+  box-sizing: border-box;
+}
+
+.app-tab-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  opacity: 0.85;
+  transition: opacity 0.15s ease, color 0.15s ease;
+}
+
+.app-tab-button:hover {
+  background: rgba(226, 184, 92, 0.06);
+  color: #f7eed7;
+  border-bottom-color: rgba(226, 184, 92, 0.45);
+}
+
+.app-tab-button:hover .app-tab-icon {
+  opacity: 1;
+  color: #ffd77a;
+}
+
+/* Active State (Executive Gold Underline #e2b85c) */
+.app-tab-button.active,
+.app-tab-button[aria-selected="true"] {
+  background: rgba(226, 184, 92, 0.1);
+  border-bottom-color: #e2b85c;
+  color: #ffffff;
+  font-weight: 750;
+}
+
+.app-tab-button.active .app-tab-icon,
+.app-tab-button[aria-selected="true"] .app-tab-icon {
+  color: #ffd77a;
+  opacity: 1;
+}
+
+.app-tab-button:focus-visible {
+  outline: 2px solid #e2b85c;
+  outline-offset: -2px;
+}
+
+/* SAP Notification Counter Badge */
+.app-tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  margin-left: 4px;
+  border-radius: 3px;
+  background: #dc2626;
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 750;
+  line-height: 1;
+}
+
+/* Hairline Tab Divider */
+.app-tab-divider {
+  width: 1px;
+  height: 18px;
+  margin: 12px 4px 0;
+  background: #272a32;
+  flex: 0 0 1px;
+}
+
+/* ==========================================================================
+   4. SAP COMPACT MESSAGESTRIP / TRANSACTION SHORTCUT
+   Datar, presisi, border-left Executive Gold, tombol aksi berwibawa
+   ========================================================================== */
+.latest-transaction-shortcut {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 0 0 14px;
+  padding: 8px 14px;
+  min-height: 46px;
+  border-radius: 4px;
+  background: #14161b;
+  border: 1px solid rgba(226, 184, 92, 0.22);
+  border-left: 4px solid #e2b85c;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+}
+
+.latest-transaction-shortcut-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  background: rgba(226, 184, 92, 0.12);
+  border: 1px solid rgba(226, 184, 92, 0.28);
+  color: #ffd77a;
+  flex: 0 0 28px;
+}
+
+.latest-transaction-shortcut-content {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.latest-transaction-shortcut-kicker {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  border-radius: 3px;
+  background: rgba(226, 184, 92, 0.12);
+  border: 1px solid rgba(226, 184, 92, 0.28);
+  color: #ffd77a;
+  font-size: 0.7rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.latest-transaction-shortcut-meta {
+  color: #f8fafc;
+  font-size: 0.88rem;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.latest-transaction-shortcut-detail {
+  color: #9aa1ad;
+  font-size: 0.78rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.latest-transaction-shortcut-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+/* SAP Standard Buttons (Executive Gold Palette) */
+.latest-transaction-shortcut-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #e2b85c 0%, #c99632 100%);
+  border: 1px solid rgba(255, 235, 180, 0.4);
+  color: #0c0906;
+  font-size: 0.8rem;
+  font-weight: 850;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.latest-transaction-shortcut-button:hover,
+.latest-transaction-shortcut-button:focus-visible {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.latest-transaction-shortcut-button.secondary {
+  background: transparent;
+  border: 1px solid rgba(226, 184, 92, 0.3);
+  color: #f7eed7;
+  box-shadow: none;
+}
+
+.latest-transaction-shortcut-button.secondary:hover,
+.latest-transaction-shortcut-button.secondary:focus-visible {
+  background: rgba(226, 184, 92, 0.12);
+  border-color: #e2b85c;
+  color: #ffffff;
+}
+
+/* Responsivitas Layar Sempit */
+@media (max-width: 900px) {
+  .app-header {
+    height: auto;
+    min-height: 48px;
+    padding: 8px 16px;
+    flex-wrap: wrap;
+  }
+  .app-brand {
+    width: 100%;
+    margin-bottom: 4px;
+  }
+  .app-header-controls {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  .app-tabs {
+    padding: 0 16px;
+  }
+  .latest-transaction-shortcut {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .latest-transaction-shortcut-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+/* Proteksi tata letak responsif Operator Session terhadap style.css lama */
+@media (max-width: 980px) {
+  .operator-session {
+    flex-direction: row !important;
+    width: auto !important;
+    align-items: center !important;
+    height: 32px !important;
+  }
+  .operator-session-label {
+    width: auto !important;
+    justify-content: flex-start !important;
+  }
+  .operator-logout-button,
+  .btn.operator-logout-button {
+    width: auto !important;
+  }
+}
+
