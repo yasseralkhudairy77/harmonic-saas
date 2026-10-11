@@ -304,6 +304,7 @@ ALTER TABLE transactions ADD COLUMN IF NOT EXISTS cash_amount NUMERIC(12,2) NOT 
 ALTER TABLE transactions ADD COLUMN IF NOT EXISTS transfer_amount NUMERIC(12,2) NOT NULL DEFAULT 0;
 ALTER TABLE transactions ADD COLUMN IF NOT EXISTS is_upfront BOOLEAN DEFAULT FALSE;
 ALTER TABLE transactions ADD COLUMN IF NOT EXISTS upfront_parent_session_id VARCHAR(100);
+ALTER TABLE transactions ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP;
 ALTER TABLE transactions DROP CONSTRAINT IF EXISTS transactions_payment_method_check;
 ALTER TABLE transactions ADD CONSTRAINT transactions_payment_method_check
 CHECK (payment_method IN ('cash', 'qris', 'transfer', 'split', ''));

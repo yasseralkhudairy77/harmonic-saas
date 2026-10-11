@@ -92,9 +92,32 @@ async function restoreBackup(backupFilePath = null) {
       const rows = data[table];
       if (!Array.isArray(rows) || rows.length === 0) continue;
 
-      const keys = Object.keys(rows[0]);
-      if (keys.length === 0) continue;
+      const rawKeys = Object.keys(rows[0]);
+      if (rawKeys.length === 0) continue;
 
+      const colRes = await client.query(`
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_schema = 'public' AND table_name = $1
+      `, [table]);
+      const existingCols = new Set(colRes.rows.map(r => r.column_name));
+
+      for (const k of rawKeys) {
+        if (!existingCols.has(k)) {
+          console.log(`  + Menambahkan kolom missing ${table}.${k}...`);
+          try {
+            await client.query(`ALTER TABLE "${table}" ADD COLUMN IF NOT EXISTS "${k}" TIMESTAMPTZ`);
+            existingCols.add(k);
+          } catch (e) {
+            try {
+              await client.query(`ALTER TABLE "${table}" ADD COLUMN IF NOT EXISTS "${k}" TEXT`);
+              existingCols.add(k);
+            } catch (e2) {}
+          }
+        }
+      }
+
+      const keys = rawKeys.filter(k => existingCols.has(k));
       const cols = keys.map(k => `"${k}"`).join(', ');
 
       // Insert dalam batch agar sangat cepat melalui jaringan cloud
