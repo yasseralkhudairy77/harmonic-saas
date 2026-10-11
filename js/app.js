@@ -13,7 +13,7 @@ import {
   LOCAL_TV_BRIDGE_ENABLED,
   LOCAL_TV_BRIDGE_TOKEN,
   LOCAL_TV_BRIDGE_URL,
-} from "./config.js?v=stable-api-v229";
+} from "./config.js?v=harmonic-v6";
 import { rooms as mockRooms } from "./mock-data.js";
 import { buildReceiptData, formatFnbSalesReport58mm, formatFreeGiftSlip58mm, formatLcShiftReport58mm, formatLcSlip58mm, formatOperationalExpenseSlip58mm, formatReceipt58mm, formatSalesCommissionSlip58mm, formatStockHandoverSlip58mm } from "./receipt.js?v=fnb-thermal-report-v1";
 import { printThermalReceipt, printThermalText } from "./printer-adapter.js?v=sales-commission-v1";
