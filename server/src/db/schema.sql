@@ -312,8 +312,6 @@ ALTER TABLE room_sessions ADD COLUMN IF NOT EXISTS upfront_transaction_id VARCHA
 ALTER TABLE room_sessions ADD COLUMN IF NOT EXISTS upfront_paid_total NUMERIC(12,2) DEFAULT 0;
 ALTER TABLE room_sessions ADD COLUMN IF NOT EXISTS upfront_paid_duration_minutes INT DEFAULT 0;
 
-ALTER TABLE lc_work_logs ADD COLUMN IF NOT EXISTS upfront_transaction_id VARCHAR(50);
-
 CREATE TABLE IF NOT EXISTS transaction_correction_logs (
     correction_id VARCHAR(80) PRIMARY KEY,
     transaction_id VARCHAR(50) REFERENCES transactions(transaction_id) ON DELETE CASCADE,
@@ -512,6 +510,7 @@ ALTER TABLE lc_work_logs ADD COLUMN IF NOT EXISTS included_minutes INT NOT NULL 
 ALTER TABLE lc_work_logs ADD COLUMN IF NOT EXISTS extra_minutes INT NOT NULL DEFAULT 0;
 ALTER TABLE lc_work_logs ADD COLUMN IF NOT EXISTS billing_source VARCHAR(30) NOT NULL DEFAULT 'regular';
 ALTER TABLE lc_work_logs ADD COLUMN IF NOT EXISTS package_id VARCHAR(50);
+ALTER TABLE lc_work_logs ADD COLUMN IF NOT EXISTS upfront_transaction_id VARCHAR(50);
 
 CREATE TABLE IF NOT EXISTS lc_sales_bonus_logs (
     bonus_log_id VARCHAR(50) PRIMARY KEY,

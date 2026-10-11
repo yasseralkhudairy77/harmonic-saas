@@ -115,20 +115,26 @@ async function ensureDatabaseBootstrap() {
     const tableCheck = await db.query(`
       SELECT EXISTS (
         SELECT FROM information_schema.tables 
-        WHERE table_schema = 'public' AND table_name = 'rooms'
+        WHERE table_schema = 'public' AND table_name = 'room_sessions'
       );
     `);
     const tablesExist = tableCheck.rows[0]?.exists === true;
 
     if (!tablesExist) {
-      console.log('[DB-BOOTSTRAP] Tabel database belum ditemukan. Menjalankan DDL schema & restorasi dataset...');
+      console.log('[DB-BOOTSTRAP] Tabel database belum lengkap. Menjalankan DDL schema & restorasi dataset...');
       const initDatabase = require('./db/init');
       await initDatabase();
       const restoreBackup = require('./db/restore-backup');
       await restoreBackup();
       console.log('[DB-BOOTSTRAP] Inisialisasi database dan dataset selesai sukses!');
     } else {
-      console.log('[DB-BOOTSTRAP] Tabel database sudah terverifikasi.');
+      console.log('[DB-BOOTSTRAP] Tabel database terverifikasi.');
+      const trxCheck = await db.query('SELECT COUNT(*)::int as count FROM transactions');
+      if ((trxCheck.rows[0]?.count || 0) === 0) {
+        console.log('[DB-BOOTSTRAP] Tabel ada tapi transaksi masih kosong. Merestorasi dataset...');
+        const restoreBackup = require('./db/restore-backup');
+        await restoreBackup();
+      }
     }
 
     await db.query(`
