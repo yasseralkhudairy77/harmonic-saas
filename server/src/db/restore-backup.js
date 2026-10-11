@@ -130,7 +130,14 @@ async function restoreBackup(backupFilePath = null) {
         batch.forEach((row, rowIndex) => {
           const placeholders = keys.map((_, colIndex) => `$${rowIndex * keys.length + colIndex + 1}`);
           valuePlaceholders.push(`(${placeholders.join(', ')})`);
-          keys.forEach(k => flatValues.push(row[k] !== undefined ? row[k] : null));
+          keys.forEach(k => {
+            const val = row[k];
+            if (val !== undefined && val !== null && typeof val === 'object' && !(val instanceof Date)) {
+              flatValues.push(JSON.stringify(val));
+            } else {
+              flatValues.push(val !== undefined ? val : null);
+            }
+          });
         });
 
         const queryText = `INSERT INTO "${table}" (${cols}) VALUES ${valuePlaceholders.join(', ')}`;
