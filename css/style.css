@@ -9523,15 +9523,44 @@ select.action-confirmation-input option {
   font-weight: 800;
 }
 
-.duration-option-button:hover,
-.duration-option-button:focus-visible,
-.duration-custom-button:hover,
-.duration-custom-button:focus-visible,
-.duration-cancel-button:hover,
-.duration-cancel-button:focus-visible {
+.duration-option-button:hover:not(:disabled),
+.duration-option-button:focus-visible:not(:disabled),
+.duration-custom-button:hover:not(:disabled),
+.duration-custom-button:focus-visible:not(:disabled),
+.duration-cancel-button:hover:not(:disabled),
+.duration-cancel-button:focus-visible:not(:disabled) {
   background: var(--button-hover);
   outline: 3px solid var(--button-focus);
   outline-offset: 2px;
+}
+
+.duration-option-button:disabled:not(.is-processing),
+.duration-custom-button:disabled:not(.is-processing),
+.duration-promo-2plus1:disabled:not(.is-processing),
+.duration-cancel-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  filter: grayscale(0.2);
+}
+
+.duration-option-button.is-processing,
+.duration-custom-button.is-processing,
+.duration-promo-2plus1.is-processing {
+  opacity: 1 !important;
+  cursor: wait !important;
+  box-shadow: 0 0 14px rgba(53, 183, 121, 0.6) !important;
+  animation: pulse-duration-processing 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse-duration-processing {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.88;
+    transform: scale(0.98);
+  }
 }
 
 .duration-custom {

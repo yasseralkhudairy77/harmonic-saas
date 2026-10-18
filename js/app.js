@@ -1194,6 +1194,7 @@ let isLoadingPrepayFnb = false;
 let prepayFnbError = "";
 let packages = [];
 let isPreparingRoomSession = false;
+let preparingRoomSessionTarget = null;
 let isActivatingPreparedSession = false;
 let isCancellingBooking = false;
 let isCompletingCleaning = false;
@@ -11388,14 +11389,28 @@ function createDurationSelectionElement(room) {
     savePkgButton.type = "button";
     savePkgButton.style.backgroundColor = "var(--color-success)";
     savePkgButton.style.color = "#fff";
+    const isThisRoomPreparing = Boolean(
+      isPreparingRoomSession &&
+      preparingRoomSessionTarget &&
+      String(preparingRoomSessionTarget.roomId) === String(room.room_id)
+    );
+
+    const isPackageTarget = Boolean(
+      isThisRoomPreparing &&
+      preparingRoomSessionTarget.type === "package"
+    );
+
     savePkgButton.style.width = "100%";
     savePkgButton.disabled = isPreparingRoomSession;
-    savePkgButton.textContent = isPreparingRoomSession ? "Menyimpan..." : "Simpan Booking Paket";
+    savePkgButton.textContent = isPackageTarget ? "Menyimpan Paket..." : "Simpan Booking Paket";
+    if (isPackageTarget) {
+      savePkgButton.classList.add("is-processing");
+    }
     savePkgButton.onclick = async () => {
       const selectedPkgId = pkgSelect.value || bookingPackageSelection;
       const selectedPkg = activePackages.find(p => p.package_id === selectedPkgId);
       if (selectedPkg) {
-        await prepareRoomSession(room.room_id, selectedPkg.duration_minutes, customerNameInput, selectedPkgId);
+        await prepareRoomSession(room.room_id, selectedPkg.duration_minutes, customerNameInput, selectedPkgId, null, "", "package");
         customerNameInput = "";
         bookingTypeSelection = "regular";
         delete selectedLcIdsForRoom[room.room_id];
@@ -11430,6 +11445,12 @@ function createDurationSelectionElement(room) {
           [180, "3 jam"],
         ];
 
+    const isThisRoomPreparing = Boolean(
+      isPreparingRoomSession &&
+      preparingRoomSessionTarget &&
+      String(preparingRoomSessionTarget.roomId) === String(room.room_id)
+    );
+
     durationOptions.forEach(([minutes, labelText]) => {
       const button = document.createElement("button");
       button.className = "duration-option-button";
@@ -11438,11 +11459,27 @@ function createDurationSelectionElement(room) {
       button.dataset.roomId = room.room_id;
       button.dataset.durationMinutes = String(minutes);
       button.disabled = isPreparingRoomSession;
-      button.textContent = isPreparingRoomSession ? "Menyiapkan..." : labelText;
+
+      const isThisTarget = Boolean(
+        isThisRoomPreparing &&
+        preparingRoomSessionTarget.type === "duration" &&
+        Number(preparingRoomSessionTarget.durationMinutes) === Number(minutes)
+      );
+
+      if (isThisTarget) {
+        button.textContent = `${labelText} (Memproses...)`;
+        button.classList.add("is-processing");
+      } else {
+        button.textContent = labelText;
+      }
       options.appendChild(button);
     });
 
     // Tombol Cepat Promo: Beli 2 Jam Gratis 1 Jam (Total 3 Jam)
+    const isPromoTarget = Boolean(
+      isThisRoomPreparing &&
+      preparingRoomSessionTarget.type === "promo"
+    );
     const promoButton = document.createElement("button");
     promoButton.className = "duration-option-button duration-promo-2plus1";
     promoButton.type = "button";
@@ -11461,10 +11498,13 @@ function createDurationSelectionElement(room) {
     promoButton.style.border = "1px solid #f59e0b";
     promoButton.style.borderRadius = "var(--radius-sm, 6px)";
     promoButton.style.boxShadow = "0 2px 8px rgba(217, 119, 6, 0.35)";
-    promoButton.style.cursor = "pointer";
-    promoButton.innerHTML = isPreparingRoomSession
-      ? "Menyiapkan Promo..."
-      : `🎁 <strong>PROMO: 2 Jam + 1 Jam Free</strong> (3 Jam)`;
+    promoButton.style.cursor = isPreparingRoomSession ? "not-allowed" : "pointer";
+    if (isPromoTarget) {
+      promoButton.innerHTML = "🎁 <strong>PROMO: 2 Jam + 1 Jam Free (Memproses...)</strong>";
+      promoButton.classList.add("is-processing");
+    } else {
+      promoButton.innerHTML = `🎁 <strong>PROMO: 2 Jam + 1 Jam Free</strong> (3 Jam)`;
+    }
     options.appendChild(promoButton);
 
     const custom = document.createElement("div");
@@ -11480,6 +11520,10 @@ function createDurationSelectionElement(room) {
     input.value = customDurationMinutes;
     input.disabled = isPreparingRoomSession;
 
+    const isCustomTarget = Boolean(
+      isThisRoomPreparing &&
+      preparingRoomSessionTarget.type === "custom"
+    );
     const customButton = document.createElement("button");
     customButton.className = "duration-custom-button";
     customButton.type = "button";
@@ -11490,7 +11534,10 @@ function createDurationSelectionElement(room) {
     customButton.style.color = "#ffffff";
     customButton.style.fontWeight = "800";
     customButton.style.boxShadow = "0 4px 12px rgba(53, 183, 121, 0.25)";
-    customButton.textContent = isPreparingRoomSession ? "Menyiapkan..." : "Custom";
+    customButton.textContent = isCustomTarget ? "Memproses..." : "Custom";
+    if (isCustomTarget) {
+      customButton.classList.add("is-processing");
+    }
 
     custom.append(input, customButton);
     panel.append(options, custom);
@@ -36891,7 +36938,7 @@ async function startSession(roomId, durationMinutes) {
   }
 }
 
-async function prepareRoomSession(roomId, durationMinutes, customerName = "", packageId = "", billableMinutes = null, promoNote = "") {
+async function prepareRoomSession(roomId, durationMinutes, customerName = "", packageId = "", billableMinutes = null, promoNote = "", targetType = "duration") {
   if (!API_BASE_URL.trim()) {
     showInlineNotice("API belum dikonfigurasi. Isi URL server dulu di config.js.", "error");
     return;
@@ -36910,6 +36957,13 @@ async function prepareRoomSession(roomId, durationMinutes, customerName = "", pa
   }
 
   isPreparingRoomSession = true;
+  preparingRoomSessionTarget = {
+    roomId: String(roomId || ""),
+    type: targetType,
+    durationMinutes: selectedDuration,
+    packageId: String(packageId || ""),
+    promoNote: String(promoNote || "")
+  };
   setActionButtonsDisabled(true);
   renderRooms();
 
@@ -36947,6 +37001,7 @@ async function prepareRoomSession(roomId, durationMinutes, customerName = "", pa
     showInlineNotice(error.message || "Gagal menyiapkan booking room.", "error");
   } finally {
     isPreparingRoomSession = false;
+    preparingRoomSessionTarget = null;
     setActionButtonsDisabled(false);
     renderRooms();
   }
@@ -40449,7 +40504,8 @@ async function handleRoomAction(event) {
     const roomId = button.dataset.roomId || "";
     const billableMinutes = button.dataset.billableMinutes ? Number(button.dataset.billableMinutes) : null;
     const promoNote = button.dataset.promoNote || "";
-    await prepareRoomSession(roomId, Number(button.dataset.durationMinutes), customerNameInput, "", billableMinutes, promoNote);
+    const targetType = promoNote ? "promo" : "duration";
+    await prepareRoomSession(roomId, Number(button.dataset.durationMinutes), customerNameInput, "", billableMinutes, promoNote, targetType);
     customerNameInput = "";
     delete selectedLcIdsForRoom[roomId];
     delete selectedLcDurationsForRoom[roomId];
@@ -40470,7 +40526,7 @@ async function handleRoomAction(event) {
     }
 
     const roomId = button.dataset.roomId || "";
-    await prepareRoomSession(roomId, selectedDuration, customerNameInput);
+    await prepareRoomSession(roomId, selectedDuration, customerNameInput, "", null, "", "custom");
     customerNameInput = "";
     delete selectedLcIdsForRoom[roomId];
     delete selectedLcDurationsForRoom[roomId];
