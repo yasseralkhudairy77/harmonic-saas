@@ -1,0 +1,571 @@
+/* ==========================================================================
+   HARMONIC NIGHTLIFE MANAGEMENT SYSTEM - CINEMATIC SPLIT LOGIN STAGE
+   Luxury Dark Hospitality Aesthetic (Executive Carbon #090b0e & Brushed Gold #e2b85c)
+   Anti-Slop Craftsmanship: Intentional, High Contrast (WCAG AA), Responsive & Ergonomic
+   ========================================================================== */
+
+/* 1. OVERALL LOGIN STAGE CONTAINER (OPAQUE ISOLATION) */
+.operator-login-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(20px, 4vw, 56px);
+  box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background:
+    radial-gradient(1100px 650px at 18% 32%, rgba(226, 184, 92, 0.13), transparent 68%),
+    radial-gradient(900px 540px at 85% 72%, rgba(201, 150, 50, 0.09), transparent 62%),
+    radial-gradient(circle at 50% 50%, rgba(13, 16, 22, 0.85), rgba(7, 9, 12, 0.98)),
+    #090b0e;
+}
+
+/* 2. SPLIT-SCREEN STAGE GRID */
+.operator-login-stage {
+  width: 100%;
+  max-width: 1140px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1.15fr 0.92fr;
+  gap: clamp(32px, 5vw, 68px);
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* 3. LEFT COLUMN: BRAND & SYSTEM SHOWCASE */
+.operator-login-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  color: #f8fafc;
+}
+
+.operator-brand-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(226, 184, 92, 0.08);
+  border: 1px solid rgba(226, 184, 92, 0.28);
+  color: #e2b85c;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.operator-brand-pill-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #e2b85c;
+  box-shadow: 0 0 8px rgba(226, 184, 92, 0.7);
+}
+
+.operator-brand-logo-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.operator-brand-logo-img {
+  display: block;
+  max-width: clamp(210px, 26vw, 300px);
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 28px rgba(226, 184, 92, 0.24));
+}
+
+.operator-brand-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.operator-brand-kicker {
+  margin: 0;
+  color: #e2b85c;
+  font-size: 0.88rem;
+  font-weight: 850;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.operator-brand-headline {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(1.85rem, 2.8vw, 2.45rem);
+  font-weight: 850;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+}
+
+.operator-brand-headline-gold {
+  background: linear-gradient(135deg, #ffe08a 0%, #e2b85c 60%, #c99632 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.operator-brand-desc {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  max-width: 480px;
+}
+
+/* Metadata & Telemetry Cards */
+.operator-brand-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.operator-meta-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: rgba(18, 22, 30, 0.75);
+  border: 1px solid rgba(226, 184, 92, 0.16);
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+}
+
+.operator-meta-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: rgba(226, 184, 92, 0.12);
+  color: #e2b85c;
+  flex-shrink: 0;
+}
+
+.operator-meta-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.operator-meta-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.operator-meta-label {
+  font-size: 0.68rem;
+  font-weight: 750;
+  color: #64748b;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.operator-meta-value {
+  font-size: 0.94rem;
+  font-weight: 750;
+  color: #f1f5f9;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.operator-status-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #34d399;
+}
+
+.operator-status-dot-pulse {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+}
+
+.operator-status-dot-pulse::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid #10b981;
+  opacity: 0.6;
+  animation: operatorPulse 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes operatorPulse {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  70% { transform: scale(1.8); opacity: 0; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+/* 4. RIGHT COLUMN: AUTHENTICATION PANEL */
+.operator-login-screen .operator-login-panel {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: clamp(26px, 3.8vw, 36px);
+  background: rgba(16, 20, 27, 0.94);
+  border: 1px solid rgba(226, 184, 92, 0.28);
+  border-radius: 20px;
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.75),
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    inset 0 1px 0 rgba(226, 184, 92, 0.2);
+  backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-sizing: border-box;
+  position: relative;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.operator-login-screen .operator-login-panel.has-error {
+  border-color: rgba(239, 68, 68, 0.55);
+  animation: loginShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes loginShake {
+  10%, 90% { transform: translate3d(-2px, 0, 0); }
+  20%, 80% { transform: translate3d(4px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+  40%, 60% { transform: translate3d(6px, 0, 0); }
+}
+
+.operator-login-header {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.operator-login-kicker {
+  margin: 0;
+  color: #e2b85c;
+  font-size: 0.78rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.operator-login-title {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 1.55rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.operator-login-desc {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+/* PIN Input Box */
+.operator-login-field-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.operator-login-field-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #cbd5e1;
+  font-size: 0.85rem;
+  font-weight: 750;
+}
+
+.operator-login-field-hint {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.operator-login-input-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.operator-login-screen .operator-login-input {
+  width: 100%;
+  min-height: 54px;
+  padding: 0 50px 0 18px;
+  background: rgba(9, 12, 16, 0.85);
+  border: 1.5px solid rgba(226, 184, 92, 0.3);
+  border-radius: 12px;
+  color: #f8fafc;
+  font-family: inherit;
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: 0.35em;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.18s ease;
+}
+
+.operator-login-screen .operator-login-input::placeholder {
+  font-size: 0.95rem;
+  letter-spacing: normal;
+  color: #475569;
+  font-weight: 600;
+}
+
+.operator-login-screen .operator-login-input:focus {
+  border-color: #ffd77a;
+  background: rgba(9, 12, 16, 0.95);
+  box-shadow:
+    0 0 0 3px rgba(226, 184, 92, 0.24),
+    0 0 24px rgba(226, 184, 92, 0.14);
+}
+
+.operator-pin-toggle-btn {
+  position: absolute;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.operator-pin-toggle-btn:hover {
+  color: #e2b85c;
+  background: rgba(226, 184, 92, 0.1);
+}
+
+.operator-pin-toggle-btn:focus-visible {
+  outline: 2px solid #e2b85c;
+  outline-offset: 1px;
+}
+
+/* Touch-Friendly Numeric Keypad */
+.operator-numpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.operator-numpad-btn {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  background: rgba(24, 30, 40, 0.75);
+  color: #f1f5f9;
+  font-family: inherit;
+  font-size: 1.25rem;
+  font-weight: 750;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.12s ease;
+}
+
+.operator-numpad-btn:hover {
+  background: rgba(226, 184, 92, 0.14);
+  border-color: rgba(226, 184, 92, 0.38);
+  color: #ffd77a;
+}
+
+.operator-numpad-btn:active {
+  transform: scale(0.96);
+  background: rgba(226, 184, 92, 0.24);
+}
+
+.operator-numpad-btn:focus-visible {
+  outline: 2px solid #e2b85c;
+  outline-offset: 1px;
+}
+
+.operator-numpad-btn.btn-action-clear {
+  color: #f87171;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.operator-numpad-btn.btn-action-clear:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+}
+
+.operator-numpad-btn.btn-action-back {
+  color: #94a3b8;
+}
+
+.operator-numpad-btn.btn-action-back:hover {
+  background: rgba(226, 184, 92, 0.14);
+  border-color: rgba(226, 184, 92, 0.38);
+  color: #ffd77a;
+}
+
+/* Error Alert Box */
+.operator-login-error {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.38);
+  color: #fca5a5;
+  font-size: 0.88rem;
+  font-weight: 750;
+}
+
+.operator-login-error-icon {
+  flex-shrink: 0;
+  color: #ef4444;
+}
+
+/* Submit Action Button */
+.operator-login-screen .operator-login-button {
+  width: 100%;
+  min-height: 50px;
+  margin-top: 4px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #e2b85c 0%, #c99632 100%);
+  color: #0c0e12;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 850;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 18px rgba(201, 150, 50, 0.32);
+  transition: all 0.18s ease;
+}
+
+.operator-login-screen .operator-login-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #ffd77a 0%, #d4a347 100%);
+  box-shadow: 0 6px 26px rgba(226, 184, 92, 0.44);
+  transform: translateY(-1px);
+}
+
+.operator-login-screen .operator-login-button:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 2px 10px rgba(201, 150, 50, 0.25);
+}
+
+.operator-login-screen .operator-login-button:focus-visible {
+  outline: 3px solid #ffd77a;
+  outline-offset: 2px;
+}
+
+.operator-login-screen .operator-login-button:disabled {
+  background: rgba(35, 42, 54, 0.7);
+  color: #64748b;
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Footer Notice */
+.operator-login-footer-notice {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.76rem;
+  line-height: 1.45;
+  text-align: center;
+}
+
+/* 5. RESPONSIVE BREAKPOINTS (R-03: MOBILE EXCELLENCE) */
+@media (max-width: 960px) {
+  .operator-login-stage {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    max-width: 520px;
+  }
+
+  .operator-login-brand {
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+  }
+
+  .operator-brand-pill {
+    align-self: center;
+  }
+
+  .operator-brand-desc {
+    max-width: 100%;
+  }
+
+  .operator-brand-meta-grid {
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .operator-meta-card {
+    justify-content: center;
+    text-align: left;
+  }
+}
+
+@media (max-width: 520px) {
+  .operator-login-screen {
+    padding: 16px;
+    align-items: flex-start;
+  }
+
+  .operator-login-stage {
+    gap: 24px;
+    padding: 12px 0 28px;
+  }
+
+  .operator-login-panel {
+    padding: 22px 18px;
+    border-radius: 16px;
+  }
+
+  .operator-brand-meta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .operator-brand-headline {
+    font-size: 1.6rem;
+  }
+
+  .operator-brand-logo-img {
+    max-width: 200px;
+  }
+
+  .operator-numpad-btn {
+    min-height: 46px;
+    font-size: 1.2rem;
+  }
+
+  .operator-login-input {
+    min-height: 50px;
+    font-size: 1.35rem;
+  }
+}

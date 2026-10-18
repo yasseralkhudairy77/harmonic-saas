@@ -1225,6 +1225,7 @@ let currentOperator = loadOperatorSession();
 let loginPin = "";
 let loginErrorMessage = "";
 let isLoggingIn = false;
+let isLoginPinRevealed = false;
 let dashboardDataInitialized = false;
 const PAGINATION_PAGE_SIZE = 10;
 const paginationState = {};
@@ -35526,14 +35527,22 @@ function renderRooms() {
 
 function updateLiveClock() {
   const clockEl = document.querySelector("#liveClockDisplay");
-  if (!clockEl) {
+  const loginClockEl = document.querySelector("#loginLiveClock");
+  if (!clockEl && !loginClockEl) {
     return;
   }
   const now = new Date();
   const hours = String(now.getHours()).padStart(2, "0");
   const minutes = String(now.getMinutes()).padStart(2, "0");
   const seconds = String(now.getSeconds()).padStart(2, "0");
-  clockEl.textContent = `${hours}:${minutes}:${seconds}`;
+  const timeString = `${hours}:${minutes}:${seconds}`;
+
+  if (clockEl) {
+    clockEl.textContent = timeString;
+  }
+  if (loginClockEl) {
+    loginClockEl.textContent = timeString;
+  }
 }
 
 function updateRunningTimers() {
@@ -38578,6 +38587,27 @@ function renderOperatorHeader() {
   operatorPanel.append(operatorLabel, divider, logoutButton);
 }
 
+function syncLoginPinState(formEl) {
+  const form = formEl || document.querySelector("[data-action='operator-login-form']");
+  if (!form) {
+    return;
+  }
+  const input = form.querySelector("#operatorLoginPin");
+  if (input) {
+    input.value = loginPin;
+  }
+  const submitButton = form.querySelector(".operator-login-button");
+  if (submitButton) {
+    submitButton.disabled = isLoggingIn || !loginPin.trim();
+  }
+  const errorEl = form.querySelector(".operator-login-error");
+  if (errorEl) {
+    errorEl.remove();
+  }
+  form.classList.remove("has-error");
+  loginErrorMessage = "";
+}
+
 function renderLoginScreen() {
   let loginScreen = document.querySelector("#operatorLoginScreen");
 
@@ -38603,59 +38633,211 @@ function renderLoginScreen() {
 
   loginScreen.replaceChildren();
 
+  const stage = document.createElement("div");
+  stage.className = "operator-login-stage";
+
+  // Sisi Kiri: Brand Showcase & Telemetri Venue
+  const brandCol = document.createElement("div");
+  brandCol.className = "operator-login-brand";
+
+  const brandPill = document.createElement("div");
+  brandPill.className = "operator-brand-pill";
+  brandPill.innerHTML = `
+    <span class="operator-brand-pill-dot" aria-hidden="true"></span>
+    <span>Nightlife Management System</span>
+  `;
+
+  const logoWrap = document.createElement("div");
+  logoWrap.className = "operator-brand-logo-wrap";
+  const logoImg = document.createElement("img");
+  logoImg.src = "assets/brand/harmonic-logo.png";
+  logoImg.alt = "Harmonic Nightlife Management";
+  logoImg.className = "operator-brand-logo-img";
+  logoWrap.appendChild(logoImg);
+
+  const titleWrap = document.createElement("div");
+  titleWrap.className = "operator-brand-title-wrap";
+  titleWrap.innerHTML = `
+    <p class="operator-brand-kicker">Harmonic Enterprise POS</p>
+    <h1 class="operator-brand-headline">Operasional POS & <span class="operator-brand-headline-gold">Venue Control</span></h1>
+    <p class="operator-brand-desc">Sistem manajemen terpadu karaoke, lounge, F&B, dan tata kelola operasional venue hiburan malam.</p>
+  `;
+
+  const metaGrid = document.createElement("div");
+  metaGrid.className = "operator-brand-meta-grid";
+  metaGrid.innerHTML = `
+    <div class="operator-meta-card">
+      <div class="operator-meta-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+      </div>
+      <div class="operator-meta-content">
+        <span class="operator-meta-label">Waktu Operasional</span>
+        <span id="loginLiveClock" class="operator-meta-value">--:--:--</span>
+      </div>
+    </div>
+    <div class="operator-meta-card">
+      <div class="operator-meta-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+      </div>
+      <div class="operator-meta-content">
+        <span class="operator-meta-label">Status Terminal</span>
+        <span class="operator-meta-value operator-status-live">
+          <span class="operator-status-dot-pulse" aria-hidden="true"></span>
+          Siap Digunakan
+        </span>
+      </div>
+    </div>
+  `;
+
+  brandCol.append(brandPill, logoWrap, titleWrap, metaGrid);
+
+  // Sisi Kanan: Panel Otentikasi Operator
   const loginPanel = document.createElement("form");
-  loginPanel.className = "operator-login-panel";
+  loginPanel.className = `operator-login-panel ${loginErrorMessage ? "has-error" : ""}`;
   loginPanel.dataset.action = "operator-login-form";
 
-  const kicker = document.createElement("p");
-  kicker.className = "operator-login-kicker";
-  kicker.textContent = "Akses Operator";
+  const header = document.createElement("div");
+  header.className = "operator-login-header";
+  header.innerHTML = `
+    <p class="operator-login-kicker">Otentikasi Kasir</p>
+    <h2 id="operatorLoginTitle" class="operator-login-title">Akses Operator</h2>
+    <p class="operator-login-desc">Masukkan PIN staf yang berwenang untuk membuka sesi terminal kasir.</p>
+  `;
 
-  const title = document.createElement("h2");
-  title.id = "operatorLoginTitle";
-  title.textContent = "Masuk Dashboard";
+  const fieldWrap = document.createElement("div");
+  fieldWrap.className = "operator-login-field-wrap";
 
-  const label = document.createElement("label");
-  label.className = "operator-login-field";
-  label.htmlFor = "operatorLoginPin";
-  label.textContent = "PIN Operator";
+  const fieldLabel = document.createElement("div");
+  fieldLabel.className = "operator-login-field-label";
+  fieldLabel.innerHTML = `
+    <span>PIN Operator</span>
+    <span class="operator-login-field-hint">Maksimal 10 Digit</span>
+  `;
+
+  const inputBox = document.createElement("div");
+  inputBox.className = "operator-login-input-box";
 
   const input = document.createElement("input");
   input.id = "operatorLoginPin";
   input.className = "operator-login-input";
-  input.type = "password";
+  input.type = isLoginPinRevealed ? "text" : "password";
   input.inputMode = "numeric";
   input.pattern = "[0-9]*";
   input.autocomplete = "current-password";
   input.value = loginPin;
-  input.placeholder = "Masukkan PIN";
+  input.placeholder = "••••";
   input.disabled = isLoggingIn;
+  input.maxLength = 10;
   input.dataset.action = "update-operator-login-pin";
+  input.setAttribute("aria-label", "PIN Operator");
 
-  label.appendChild(input);
+  const toggleBtn = document.createElement("button");
+  toggleBtn.type = "button";
+  toggleBtn.className = "operator-pin-toggle-btn";
+  toggleBtn.dataset.action = "toggle-pin-visibility";
+  toggleBtn.setAttribute("title", isLoginPinRevealed ? "Sembunyikan PIN" : "Tampilkan PIN");
+  toggleBtn.setAttribute("aria-label", isLoginPinRevealed ? "Sembunyikan PIN" : "Tampilkan PIN");
+  toggleBtn.innerHTML = isLoginPinRevealed
+    ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`
+    : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
 
-  const submitButton = document.createElement("button");
-  submitButton.type = "submit";
-  submitButton.className = "btn btn-primary operator-login-button";
-  submitButton.disabled = isLoggingIn || !loginPin.trim();
-  submitButton.textContent = isLoggingIn ? "Memeriksa..." : "Masuk";
+  inputBox.append(input, toggleBtn);
+  fieldWrap.append(fieldLabel, inputBox);
 
-  loginPanel.append(kicker, title, label);
+  loginPanel.append(header, fieldWrap);
 
   if (loginErrorMessage) {
-    const error = document.createElement("p");
+    const error = document.createElement("div");
     error.className = "operator-login-error";
     error.setAttribute("role", "alert");
-    error.textContent = loginErrorMessage;
+    error.innerHTML = `
+      <svg class="operator-login-error-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      <span>${escapeHtml(loginErrorMessage)}</span>
+    `;
     loginPanel.appendChild(error);
   }
 
-  loginPanel.appendChild(submitButton);
-  loginScreen.appendChild(loginPanel);
+  // Touch-Friendly Numeric Keypad
+  const numpad = document.createElement("div");
+  numpad.className = "operator-numpad";
+  numpad.setAttribute("role", "group");
+  numpad.setAttribute("aria-label", "Keypad Angka Operator");
+
+  const numpadKeys = [
+    { label: "1", action: "numpad-digit", digit: "1" },
+    { label: "2", action: "numpad-digit", digit: "2" },
+    { label: "3", action: "numpad-digit", digit: "3" },
+    { label: "4", action: "numpad-digit", digit: "4" },
+    { label: "5", action: "numpad-digit", digit: "5" },
+    { label: "6", action: "numpad-digit", digit: "6" },
+    { label: "7", action: "numpad-digit", digit: "7" },
+    { label: "8", action: "numpad-digit", digit: "8" },
+    { label: "9", action: "numpad-digit", digit: "9" },
+    { label: "C", action: "numpad-clear", extraClass: "btn-action-clear", title: "Hapus Semua Digit" },
+    { label: "0", action: "numpad-digit", digit: "0" },
+    { label: "⌫", action: "numpad-backspace", extraClass: "btn-action-back", title: "Hapus Satu Digit Terakhir" },
+  ];
+
+  numpadKeys.forEach((key) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = `operator-numpad-btn ${key.extraClass || ""}`.trim();
+    btn.dataset.action = key.action;
+    if (key.digit !== undefined) {
+      btn.dataset.digit = key.digit;
+    }
+    if (key.title) {
+      btn.setAttribute("title", key.title);
+      btn.setAttribute("aria-label", key.title);
+    }
+    btn.disabled = isLoggingIn;
+    btn.textContent = key.label;
+    numpad.appendChild(btn);
+  });
+
+  loginPanel.appendChild(numpad);
+
+  // Submit button
+  const submitButton = document.createElement("button");
+  submitButton.type = "submit";
+  submitButton.className = "operator-login-button";
+  submitButton.disabled = isLoggingIn || !loginPin.trim();
+
+  if (isLoggingIn) {
+    submitButton.innerHTML = `<span>Memeriksa Kredensial...</span>`;
+  } else {
+    submitButton.innerHTML = `
+      <span>Buka Terminal Kasir</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <polyline points="12 5 19 12 12 19"></polyline>
+      </svg>
+    `;
+  }
+
+  const footerNotice = document.createElement("p");
+  footerNotice.className = "operator-login-footer-notice";
+  footerNotice.textContent = "Sesi ini diproteksi protokol audit operasional internal venue.";
+
+  loginPanel.append(submitButton, footerNotice);
+
+  stage.append(brandCol, loginPanel);
+  loginScreen.appendChild(stage);
+
+  updateLiveClock();
 
   window.requestAnimationFrame(() => {
     const activeInput = document.querySelector("#operatorLoginPin");
-
     if (activeInput && document.activeElement !== activeInput) {
       activeInput.focus();
     }
@@ -41195,7 +41377,7 @@ document.addEventListener("input", (event) => {
     return;
   }
 
-  loginPin = loginPinInput.value.replace(/\D/g, "");
+  loginPin = loginPinInput.value.replace(/\D/g, "").slice(0, 10);
   loginErrorMessage = "";
   
   // Update the input value in-place to avoid cursor jumps / redraws
@@ -41212,6 +41394,7 @@ document.addEventListener("input", (event) => {
     if (errorEl) {
       errorEl.remove();
     }
+    loginForm.classList.remove("has-error");
   }
 });
 
@@ -41227,6 +41410,46 @@ document.addEventListener("submit", (event) => {
 });
 
 document.addEventListener("click", (event) => {
+  const togglePinBtn = event.target.closest("[data-action='toggle-pin-visibility']");
+  if (togglePinBtn) {
+    isLoginPinRevealed = !isLoginPinRevealed;
+    const pinInput = document.querySelector("#operatorLoginPin");
+    if (pinInput) {
+      pinInput.type = isLoginPinRevealed ? "text" : "password";
+      pinInput.focus();
+    }
+    togglePinBtn.setAttribute("title", isLoginPinRevealed ? "Sembunyikan PIN" : "Tampilkan PIN");
+    togglePinBtn.setAttribute("aria-label", isLoginPinRevealed ? "Sembunyikan PIN" : "Tampilkan PIN");
+    togglePinBtn.innerHTML = isLoginPinRevealed
+      ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`
+      : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+    return;
+  }
+
+  const numpadDigit = event.target.closest("[data-action='numpad-digit']");
+  if (numpadDigit && !isLoggingIn) {
+    const digit = numpadDigit.dataset.digit;
+    if (digit !== undefined) {
+      loginPin = (loginPin + digit).slice(0, 10);
+      syncLoginPinState();
+    }
+    return;
+  }
+
+  const numpadClear = event.target.closest("[data-action='numpad-clear']");
+  if (numpadClear && !isLoggingIn) {
+    loginPin = "";
+    syncLoginPinState();
+    return;
+  }
+
+  const numpadBack = event.target.closest("[data-action='numpad-backspace']");
+  if (numpadBack && !isLoggingIn) {
+    loginPin = loginPin.slice(0, -1);
+    syncLoginPinState();
+    return;
+  }
+
   const logoutButton = event.target.closest("[data-action='logout-operator']");
 
   if (logoutButton) {
