@@ -274,7 +274,7 @@
   margin-top: 6px;
   border: none;
   border-radius: 999px;
-  background: linear-gradient(135deg, #f5b338 0%, #d4931a 100%);
+  background: linear-gradient(135deg, var(--tenant-accent, #f5b338) 0%, var(--tenant-accent-hover, #d4931a) 100%);
   color: #0c0e12;
   font-family: inherit;
   font-size: 0.98rem;
@@ -284,13 +284,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 24px rgba(226, 184, 92, 0.32);
+  box-shadow: 0 8px 24px var(--tenant-accent-glow, rgba(226, 184, 92, 0.32));
   transition: all 0.2s ease;
 }
 
 .operator-login-screen .operator-btn-login:hover:not(:disabled) {
-  background: linear-gradient(135deg, #ffd77a 0%, #e2b85c 100%);
-  box-shadow: 0 10px 28px rgba(226, 184, 92, 0.44);
+  background: linear-gradient(135deg, var(--tenant-accent-hover, #ffd77a) 0%, var(--tenant-accent, #e2b85c) 100%);
+  box-shadow: 0 10px 28px var(--tenant-accent-glow, rgba(226, 184, 92, 0.44));
   transform: translateY(-1px);
 }
 

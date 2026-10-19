@@ -721,7 +721,19 @@ function getAllowedDashboardTabsForCurrentRole() {
 
 function getVisibleDashboardTabs() {
   const allowedTabs = new Set(getAllowedDashboardTabsForCurrentRole());
-  return DASHBOARD_TABS.filter((tab) => allowedTabs.has(tab.key));
+  const hasLcModule = !window.TenantProvider || window.TenantProvider.isModuleEnabled("lady_companion");
+  const unitLabel = window.TenantProvider ? window.TenantProvider.getTerminology("unit_label", "Ruangan") : "Ruangan";
+
+  return DASHBOARD_TABS.filter((tab) => {
+    if (!allowedTabs.has(tab.key)) return false;
+    if (tab.key === "lc" && !hasLcModule) return false;
+    return true;
+  }).map((tab) => {
+    if (tab.key === "rooms" && unitLabel && unitLabel !== "Ruangan") {
+      return { ...tab, label: unitLabel };
+    }
+    return tab;
+  });
 }
 
 function getDefaultDashboardTabForCurrentRole() {
@@ -38695,22 +38707,29 @@ function renderLoginScreen() {
   const leftCol = document.createElement("div");
   leftCol.className = "operator-frame-left";
 
+  const tenantProfile = window.TenantProvider ? window.TenantProvider.getProfile() : null;
+  const brandLogo = tenantProfile?.branding?.logo_login_url || "assets/brand/harmonic-logo-header.png";
+  const brandName = tenantProfile?.short_name || "Harmonic";
+  const brandBadge = tenantProfile?.tagline || "Nightlife Management System";
+  const brandHero = tenantProfile?.branding?.login_hero_url || "assets/brand/harmonic-login-hero.jpg";
+  const brandDesc = tenantProfile?.description || "Precision management for nightlife, lounge, and karaoke operations.";
+
   const brandLockup = document.createElement("div");
   brandLockup.className = "operator-frame-brand";
   brandLockup.innerHTML = `
-    <img src="assets/brand/harmonic-logo-header.png" alt="Harmonic" class="operator-frame-brand-img" />
-    <span class="operator-frame-badge">Nightlife Management System</span>
+    <img src="${brandLogo}" alt="${brandName}" class="operator-frame-brand-img" />
+    <span class="operator-frame-badge">${brandBadge}</span>
   `;
 
   const visualWrap = document.createElement("div");
   visualWrap.className = "operator-frame-visual";
   visualWrap.innerHTML = `
-    <img src="assets/brand/harmonic-login-hero.jpg" alt="Harmonic Nightlife System Artwork" class="operator-hero-art" />
+    <img src="${brandHero}" alt="${brandName} Artwork" class="operator-hero-art" />
   `;
 
   const tagline = document.createElement("p");
   tagline.className = "operator-frame-tagline";
-  tagline.textContent = "Precision management for nightlife, lounge, and karaoke operations.";
+  tagline.textContent = brandDesc;
 
   leftCol.append(brandLockup, visualWrap, tagline);
 
