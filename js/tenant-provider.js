@@ -239,6 +239,41 @@
       applyThemeVariables(activeProfile.branding?.theme);
       updateDomBranding(activeProfile);
 
+      // Asynchronously sync latest database config from server
+      if (typeof window !== "undefined" && typeof fetch === "function") {
+        TenantProvider.fetchLiveProfile(slug).catch(() => {});
+      }
+
+      return activeProfile;
+    },
+
+    fetchLiveProfile: async function (slug) {
+      const targetSlug = slug || activeProfile.slug || "default";
+      try {
+        const res = await fetch(`/api/tenant-profile?slug=${encodeURIComponent(targetSlug)}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.ok && data.tenant) {
+            const t = data.tenant;
+            const liveProfile = {
+              tenant_id: t.tenant_id,
+              slug: t.slug,
+              name: t.name,
+              short_name: t.name,
+              tagline: t.config?.tagline || activeProfile.tagline || "",
+              description: t.config?.description || activeProfile.description || "",
+              branding: t.config?.branding || activeProfile.branding || {},
+              operational: t.config?.operational || activeProfile.operational || {},
+              modules: t.config?.modules || activeProfile.modules || {},
+              terminology: t.config?.terminology || activeProfile.terminology || {}
+            };
+            activeProfile = { ...activeProfile, ...liveProfile };
+            applyThemeVariables(activeProfile.branding?.theme);
+            updateDomBranding(activeProfile);
+            return activeProfile;
+          }
+        }
+      } catch (_) {}
       return activeProfile;
     },
 

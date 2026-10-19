@@ -16,6 +16,7 @@ const backupController = require('../controllers/backupController');
 const analyticsController = require('../controllers/analyticsController');
 const { successResponse, errorResponse } = require('../utils/response');
 const tvBridge = require('../services/tvBridgeService');
+const { resolveTenant } = require('../middleware/tenantContext');
 
 /*
   Jembatan TV: setelah aksi sesi berhasil, posisi ruangan disesuaikan dengan bridge TV.
@@ -94,6 +95,11 @@ async function handleGetAction(action, req, res) {
   switch (action) {
     case 'health':
       return successResponse(res, { status: 'healthy', database: 'postgresql_local' });
+    case 'getTenantProfile': {
+      const slug = req.query.slug || req.query.tenant || req.tenant?.slug || 'default';
+      const tenant = await resolveTenant(slug);
+      return successResponse(res, { tenant });
+    }
     case 'getRooms':
       return roomsController.getRooms(req, res);
     case 'getRoomUsageReport':
@@ -520,6 +526,11 @@ router.post('/exec', async (req, res) => {
 });
 
 // RESTful aliases
+router.get('/tenant-profile', async (req, res) => {
+  const slug = req.query.slug || req.query.tenant || req.tenant?.slug || 'default';
+  const tenant = await resolveTenant(slug);
+  return successResponse(res, { tenant });
+});
 router.get('/rooms', (req, res) => roomsController.getRooms(req, res));
 router.get('/menu', (req, res) => fnbController.getMenuItems(req, res));
 router.get('/inventory', (req, res) => inventoryController.getInventoryItems(req, res));

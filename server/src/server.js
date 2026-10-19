@@ -44,6 +44,9 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(express.text({ type: ['text/plain', 'application/json'], limit: '50mb' }));
 
+const tenantContext = require('./middleware/tenantContext');
+app.use(tenantContext);
+
 app.use('/', apiRoutes);
 app.use('/api', apiRoutes);
 
@@ -144,6 +147,9 @@ async function ensureDatabaseBootstrap() {
       CHECK (reference_type IN ('transaction', 'manual_adjustment', 'stock_audit', 'inventory_audit', 'fnb_order', 'goods_receipt', 'initial_stock_revision'));
     `);
     console.log('[DB] Schema constraint stock_movements_reference_type_check verified.');
+
+    const runMultiTenantMigration = require('./db/multiTenantMigration');
+    await runMultiTenantMigration(db);
   } catch (err) {
     if (err.code !== 'ECONNREFUSED' && !err.message.includes('ECONNREFUSED') && !err.message.includes('DATABASE_OFFLINE')) {
       console.warn('[DB] Notice verifying/bootstrapping database:', err.message);
