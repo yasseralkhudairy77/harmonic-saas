@@ -17,6 +17,7 @@ const analyticsController = require('../controllers/analyticsController');
 const { successResponse, errorResponse } = require('../utils/response');
 const tvBridge = require('../services/tvBridgeService');
 const { resolveTenant } = require('../middleware/tenantContext');
+const onboardingController = require('../controllers/onboardingController');
 
 /*
   Jembatan TV: setelah aksi sesi berhasil, posisi ruangan disesuaikan dengan bridge TV.
@@ -205,6 +206,12 @@ async function handleGetAction(action, req, res) {
 // Helper to handle Apps Script POST actions
 async function handlePostAction(action, req, res, payload) {
   switch (action) {
+    case 'createTenant':
+      req.body = payload;
+      return onboardingController.createTenant(req, res);
+    case 'checkSlug':
+      req.query = { ...req.query, ...payload };
+      return onboardingController.checkSlug(req, res);
     case 'health':
     case 'getRooms':
     case 'getRoomUsageReport':
@@ -526,6 +533,8 @@ router.post('/exec', async (req, res) => {
 });
 
 // RESTful aliases
+router.get('/onboarding/check-slug', (req, res) => onboardingController.checkSlug(req, res));
+router.post('/onboarding/create-tenant', (req, res) => onboardingController.createTenant(req, res));
 router.get('/tenant-profile', async (req, res) => {
   const slug = req.query.slug || req.query.tenant || req.tenant?.slug || 'default';
   const tenant = await resolveTenant(slug);

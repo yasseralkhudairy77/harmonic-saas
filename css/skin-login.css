@@ -408,3 +408,10 @@
     font-size: 1.55rem;
   }
 }
+
+.operator-onboarding-link:hover {
+  background: rgba(245, 179, 56, 0.12) !important;
+  border-color: var(--tenant-accent, #e2b85c) !important;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+}

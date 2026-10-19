@@ -38827,7 +38827,17 @@ function renderLoginScreen() {
     </div>
   `;
 
-  loginForm.append(submitButton, metaFooter);
+  const onboardingLink = document.createElement("div");
+  onboardingLink.style.textAlign = "center";
+  onboardingLink.style.marginTop = "8px";
+  onboardingLink.innerHTML = `
+    <a href="onboarding.html" class="operator-onboarding-link" style="color: var(--tenant-accent, #e2b85c); font-size: 0.82rem; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s ease;">
+      <span>✨ Daftarkan Venue Baru (SaaS Onboarding)</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+    </a>
+  `;
+
+  loginForm.append(submitButton, metaFooter, onboardingLink);
   rightCol.appendChild(loginForm);
 
   frame.append(leftCol, rightCol);

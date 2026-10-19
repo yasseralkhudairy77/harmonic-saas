@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pendaftaran Venue Baru - Harmonic SaaS Onboarding Wizard</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="css/skin-onboarding.css?v=saas-v1" />
+  </head>
+  <body class="onboarding-body">
+    <div class="onboarding-viewport">
+      <!-- Header -->
+      <header class="onboarding-header">
+        <div class="onboarding-brand">
+          <img src="assets/brand/harmonic-logo-header.png" alt="Harmonic SaaS" class="onboarding-brand-logo" />
+          <div class="onboarding-brand-meta">
+            <h1 class="onboarding-brand-title">Harmonic Nightlife SaaS</h1>
+            <span class="onboarding-brand-badge">Venue Onboarding Wizard</span>
+          </div>
+        </div>
+        <a href="index.html" class="onboarding-exit-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          Kembali ke Terminal Kasir
+        </a>
+      </header>
+
+      <!-- Stepper Progress Indicator -->
+      <nav class="onboarding-stepper-wrap" aria-label="Alur Onboarding">
+        <ol class="onboarding-stepper" id="onboardingStepper">
+          <li class="onboarding-step-item is-active" data-step="1">
+            <span class="onboarding-step-num">1</span>
+            <span class="onboarding-step-label">Identitas</span>
+          </li>
+          <li class="onboarding-step-item" data-step="2">
+            <span class="onboarding-step-num">2</span>
+            <span class="onboarding-step-label">Shift & Waktu</span>
+          </li>
+          <li class="onboarding-step-item" data-step="3">
+            <span class="onboarding-step-num">3</span>
+            <span class="onboarding-step-label">Pajak & Billing</span>
+          </li>
+          <li class="onboarding-step-item" data-step="4">
+            <span class="onboarding-step-num">4</span>
+            <span class="onboarding-step-label">Fitur & Modul</span>
+          </li>
+          <li class="onboarding-step-item" data-step="5">
+            <span class="onboarding-step-num">5</span>
+            <span class="onboarding-step-label">Data Awal</span>
+          </li>
+          <li class="onboarding-step-item" data-step="6">
+            <span class="onboarding-step-num">6</span>
+            <span class="onboarding-step-label">Akun Owner</span>
+          </li>
+        </ol>
+      </nav>
+
+      <!-- Main Step Container Card -->
+      <main class="onboarding-card">
+        <!-- LANGKAH 1: PROFIL & IDENTITAS -->
+        <section class="onboarding-step-panel is-visible" data-step-panel="1">
+          <div class="onboarding-panel-header">
+            <h2 class="onboarding-panel-title">Langkah 1: <span class="gold-gradient-text">Identitas & Profil Venue</span></h2>
+            <p class="onboarding-panel-desc">Tentukan nama usaha tempat karaoke, lounge, atau bar Anda, beserta subdomain sistem yang diinginkan.</p>
+          </div>
+
+          <div class="onboarding-form-grid">
+            <div class="onboarding-form-group span-full">
+              <label class="onboarding-label" for="obVenueName">
+                Nama Tempat / Brand Venue <span class="onboarding-label-hint">Wajib</span>
+              </label>
+              <input type="text" id="obVenueName" class="onboarding-input-control" placeholder="Contoh: Golden Executive KTV" required />
+            </div>
+
+            <div class="onboarding-form-group span-full">
+              <label class="onboarding-label" for="obSlug">
+                Subdomain Sistem SaaS <span class="onboarding-label-hint">Alamat URL Web Venue Anda</span>
+              </label>
+              <div class="onboarding-slug-input-wrap">
+                <input type="text" id="obSlug" class="onboarding-slug-input" placeholder="golden-ktv" required />
+                <span class="onboarding-slug-suffix">.harmonicsaas.com</span>
+              </div>
+              <div id="slugStatusNotice" class="onboarding-slug-status"></div>
+            </div>
+
+            <div class="onboarding-form-group">
+              <label class="onboarding-label" for="obTagline">
+                Tagline / Slogan Venue <span class="onboarding-label-hint">Opsional</span>
+              </label>
+              <input type="text" id="obTagline" class="onboarding-input-control" placeholder="Contoh: Premium Executive Karaoke & Lounge" />
+            </div>
+
+            <div class="onboarding-form-group">
+              <label class="onboarding-label" for="obTimezone">
+                Zona Waktu Wilayah Operasional
+              </label>
+              <select id="obTimezone" class="onboarding-select-control">
+                <option value="Asia/Jakarta">WIB: Asia/Jakarta (UTC+7)</option>
+                <option value="Asia/Makassar">WITA: Asia/Makassar (UTC+8)</option>
+                <option value="Asia/Jayapura">WIT: Asia/Jayapura (UTC+9)</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <!-- LANGKAH 2: WAKTU OPERASIONAL & SHIFT KASIR -->
+        <section class="onboarding-step-panel" data-step-panel="2">
+          <div class="onboarding-panel-header">
+            <h2 class="onboarding-panel-title">Langkah 2: <span class="gold-gradient-text">Waktu Operasional & Cut-Off Shift</span></h2>
+            <p class="onboarding-panel-desc">Tentukan jam cut-off buku kas harian agar omzet transaksi dini hari tetap tercatat akurat.</p>
+          </div>
+
+          <div class="onboarding-form-grid">
+            <div class="onboarding-form-group">
+              <label class="onboarding-label" for="obCutoffHour">
+                Jam Cut-Off Pergantian Tanggal Buku Kas
+              </label>
+              <select id="obCutoffHour" class="onboarding-select-control">
+                <option value="6">06:00 Pagi (Karaoke Keluarga)</option>
+                <option value="7">07:00 Pagi</option>
+                <option value="8">08:00 Pagi</option>
+                <option value="9">09:00 Pagi</option>
+                <option value="10" selected>10:00 Pagi (Executive Nightlife / Rekomendasi)</option>
+                <option value="11">11:00 Siang</option>
+                <option value="12">12:00 Siang</option>
+              </select>
+            </div>
+
+            <div class="onboarding-form-group">
+              <label class="onboarding-label" for="obShiftCount">
+                Jumlah Shift Kasir per Hari
+              </label>
+              <select id="obShiftCount" class="onboarding-select-control">
+                <option value="1">1 Shift Tunggal (Full Day Operasional)</option>
+                <option value="2" selected>2 Shift (Shift Siang & Shift Malam)</option>
+                <option value="3">3 Shift (Pagi, Siang, Malam)</option>
+              </select>
+            </div>
+
+            <div class="onboarding-form-group span-full">
+              <div class="onboarding-info-box">
+                <svg class="onboarding-info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span>
+                  <strong>Aturan Akuntansi Nightlife:</strong> Tamu yang checkout pukul 03:30 subuh hari Minggu, karena masih sebelum jam cut-off 10:00 pagi, maka transaksi dan setoran kasirnya tetap masuk ke buku kas hari Sabtu.
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- LANGKAH 3: ATURAN PAJAK & BILLING -->
+        <section class="onboarding-step-panel" data-step-panel="3">
+          <div class="onboarding-panel-header">
+            <h2 class="onboarding-panel-title">Langkah 3: <span class="gold-gradient-text">Aturan Pajak Daerah & Billing</span></h2>
+            <p class="onboarding-panel-desc">Sesuaikan persentase Pajak Hiburan Daerah (PB1), Service Charge, dan toleransi pembulatan menit ruangan.</p>
+          </div>
+
+          <div class="onboarding-form-grid">
+            <div class="onboarding-form-group">
+              <label class="onboarding-label" for="obTaxPb1">
+                Pajak Hiburan Daerah (PB1) <span class="onboarding-label-hint">Persen (%)</span>
+              </label>
+              <input type="number" id="obTaxPb1" class="onboarding-input-control" value="10" min="0" max="75" step="0.5" />
+            </div>
+
+            <div class="onboarding-form-group">
+              <label class="onboarding-label" for="obServiceCharge">
+                Biaya Layanan (Service Charge) <span class="onboarding-label-hint">Persen (%)</span>
+              </label>
+              <input type="number" id="obServiceCharge" class="onboarding-input-control" value="5" min="0" max="30" step="0.5" />
+            </div>
+
+            <div class="onboarding-form-group span-full">
+              <label class="onboarding-label">Skema Perhitungan Harga Menu F&B</label>
+              <div class="onboarding-choice-grid">
+                <div class="onboarding-choice-card is-selected" data-pricing-mode="plus_plus">
+                  <h3 class="onboarding-choice-title">
+                    <span>Skema Plus-Plus (++)</span>
+                    <span>✓</span>
+                  </h3>
+                  <p class="onboarding-choice-desc">Harga menu di kasir belum termasuk pajak. Pajak PB1 & Service Charge dihitung otomatis pada subtotal tagihan tamu.</p>
+                </div>
+                <div class="onboarding-choice-card" data-pricing-mode="nett">
+                  <h3 class="onboarding-choice-title">
+                    <span>Skema Nett (All-In)</span>
+                    <span></span>
+                  </h3>
+                  <p class="onboarding-choice-desc">Harga menu yang tertulis sudah termasuk seluruh pajak dan biaya layanan. Total kasir sesuai dengan harga di buku menu.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="onboarding-form-group span-full">
+              <label class="onboarding-label" for="obGracePeriod">
+                Toleransi Keterlambatan Checkout (Grace Period)
+              </label>
+              <select id="obGracePeriod" class="onboarding-select-control">
+                <option value="10" selected>10 Menit Pertama Gratis (Standar Industri)</option>
+                <option value="15">15 Menit Pertama Gratis (Fleksibel)</option>
+                <option value="0">0 Menit: Ketat (Langsung Tagih Extend Menit)</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <!-- LANGKAH 4: FITUR & MODUL OPERASIONAL -->
+        <section class="onboarding-step-panel" data-step-panel="4">
+          <div class="onboarding-panel-header">
+            <h2 class="onboarding-panel-title">Langkah 4: <span class="gold-gradient-text">Fitur & Modul Operasional</span></h2>
+            <p class="onboarding-panel-desc">Aktifkan atau sembunyikan modul sesuai tipe venue karaoke, lounge, atau club Anda.</p>
+          </div>
+
+          <div class="onboarding-toggle-grid">
+            <div class="onboarding-toggle-card">
+              <div class="onboarding-toggle-meta">
+                <h3 class="onboarding-toggle-title">Modul Pemandu Lagu (LC)</h3>
+                <p class="onboarding-toggle-desc">Menampilkan tab LC, tarif jam pemandu lagu, pembagian komisi bersih, dan rekap kasbon. Nonaktifkan untuk Karaoke Keluarga.</p>
+              </div>
+              <label class="onboarding-switch">
+                <input type="checkbox" id="obModLc" checked />
+                <span class="onboarding-slider"></span>
+              </label>
+            </div>
+
+            <div class="onboarding-toggle-card">
+              <div class="onboarding-toggle-meta">
+                <h3 class="onboarding-toggle-title">Kontrol TV Otomatis (ADB / IoT)</h3>
+                <p class="onboarding-toggle-desc">Menyalakan dan mematikan arus TV Android karaoke secara otomatis saat durasi sewa ruangan dimulai atau habis.</p>
+              </div>
+              <label class="onboarding-switch">
+                <input type="checkbox" id="obModTv" checked />
+                <span class="onboarding-slider"></span>
+              </label>
+            </div>
+
+            <div class="onboarding-toggle-card">
+              <div class="onboarding-toggle-meta">
+                <h3 class="onboarding-toggle-title">Cetak Pisah Dapur & Bar</h3>
+                <p class="onboarding-toggle-desc">Pesanan makanan langsung mencetak struk di printer dapur, sedangkan pesanan minuman mencetak di printer bar kasir.</p>
+              </div>
+              <label class="onboarding-switch">
+                <input type="checkbox" id="obModKitchenPrint" />
+                <span class="onboarding-slider"></span>
+              </label>
+            </div>
+
+            <div class="onboarding-toggle-card">
+              <div class="onboarding-toggle-meta">
+                <h3 class="onboarding-toggle-title">Terminologi Tempat Duduk / Unit</h3>
+                <p class="onboarding-toggle-desc">Pilih sebutan unit operasional utama pada antarmuka kasir Anda.</p>
+              </div>
+              <select id="obTerminology" class="onboarding-select-control" style="width: 140px;">
+                <option value="room" selected>Ruangan (Room)</option>
+                <option value="table">Meja (Table)</option>
+                <option value="booth">VIP Booth (Sofa)</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <!-- LANGKAH 5: MASTER DATA AWAL -->
+        <section class="onboarding-step-panel" data-step-panel="5">
+          <div class="onboarding-panel-header">
+            <h2 class="onboarding-panel-title">Langkah 5: <span class="gold-gradient-text">Inisialisasi Master Data Awal</span></h2>
+            <p class="onboarding-panel-desc">Pilih bagaimana sistem mengisi daftar ruangan dan menu awal untuk venue Anda.</p>
+          </div>
+
+          <div class="onboarding-choice-grid">
+            <div class="onboarding-choice-card is-selected" data-starter-option="starter_demo">
+              <h3 class="onboarding-choice-title">
+                <span>Inisialisasi Data Cepat (Disarankan)</span>
+                <span>✓</span>
+              </h3>
+              <p class="onboarding-choice-desc">Sistem otomatis menyiapkan 4 Ruangan (Standard, Deluxe, Executive, VIP Suite) dan 4 Menu F&B siap pakai. Anda bisa langsung mencoba operasional kasir detik ini juga.</p>
+            </div>
+
+            <div class="onboarding-choice-card" data-starter-option="empty">
+              <h3 class="onboarding-choice-title">
+                <span>Mulai Database Bersih (Kosong)</span>
+                <span></span>
+              </h3>
+              <p class="onboarding-choice-desc">Database diinisialisasi dalam kondisi bersih tanpa data contoh. Anda dapat menginput daftar ruangan dan menu sendiri setelah proses setup.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- LANGKAH 6: AKUN OWNER & GO-LIVE -->
+        <section class="onboarding-step-panel" data-step-panel="6">
+          <div class="onboarding-panel-header">
+            <h2 class="onboarding-panel-title">Langkah 6: <span class="gold-gradient-text">Akun Owner & Konfirmasi Peluncuran</span></h2>
+            <p class="onboarding-panel-desc">Buat akun pengelola utama dan periksa kembali konfigurasi venue Anda sebelum sistem diaktifkan.</p>
+          </div>
+
+          <div class="onboarding-form-grid">
+            <div class="onboarding-form-group">
+              <label class="onboarding-label" for="obOwnerName">
+                Nama Pemilik / General Manager <span class="onboarding-label-hint">Wajib</span>
+              </label>
+              <input type="text" id="obOwnerName" class="onboarding-input-control" placeholder="Contoh: Bpk. Hendra" required />
+            </div>
+
+            <div class="onboarding-form-group">
+              <label class="onboarding-label" for="obOwnerPin">
+                Buat PIN Akses Owner <span class="onboarding-label-hint">Minimal 4 Digit Angka</span>
+              </label>
+              <input type="password" id="obOwnerPin" class="onboarding-input-control" inputmode="numeric" pattern="[0-9]*" maxlength="10" placeholder="Contoh: 8899" required />
+            </div>
+
+            <div class="onboarding-form-group span-full">
+              <label class="onboarding-label">Ringkasan Konfigurasi Venue</label>
+              <div class="onboarding-review-card" id="onboardingReviewSummary">
+                <!-- Diisi dinamis oleh script -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Footer Navigation Controls -->
+        <footer class="onboarding-footer">
+          <button type="button" id="btnPrevStep" class="onboarding-btn-prev" style="visibility: hidden;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Sebelumnya
+          </button>
+
+          <button type="button" id="btnNextStep" class="onboarding-btn-next">
+            Lanjutkan
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+
+          <button type="button" id="btnSubmitOnboarding" class="onboarding-btn-submit" style="display: none;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Inisialisasi & Luncurkan Venue
+          </button>
+        </footer>
+      </main>
+    </div>
+
+    <!-- Success Modal Overlay -->
+    <div id="onboardingSuccessModal" class="onboarding-modal-overlay" role="dialog" aria-modal="true">
+      <div class="onboarding-modal-card">
+        <div class="onboarding-success-icon">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <h2 style="margin: 0; font-size: 1.45rem; font-weight: 850;">Venue Berhasil Diluncurkan!</h2>
+          <p id="successModalVenueName" style="margin: 0; color: var(--ob-accent-gold); font-size: 1.05rem; font-weight: 750;"></p>
+          <p style="margin: 4px 0 0; color: var(--ob-text-secondary); font-size: 0.88rem; line-height: 1.5;">
+            Basis data mandiri Anda telah diinisialisasi. Terminal kasir dan billing room sudah siap digunakan.
+          </p>
+        </div>
+
+        <div style="width: 100%; padding: 12px; background: rgba(255, 255, 255, 0.04); border-radius: 10px; border: 1px dashed rgba(255, 255, 255, 0.12); font-size: 0.85rem; text-align: left; display: flex; flex-direction: column; gap: 4px;">
+          <div><span style="color: var(--ob-text-muted);">Alamat Subdomain:</span> <strong id="successModalUrl" style="color: #ffffff;"></strong></div>
+          <div><span style="color: var(--ob-text-muted);">PIN Owner Kasir:</span> <strong id="successModalPin" style="color: var(--ob-accent-gold);"></strong></div>
+        </div>
+
+        <button type="button" id="btnLaunchDashboard" class="onboarding-btn-submit" style="width: 100%; min-height: 50px;">
+          Buka Terminal Kasir Sekarang
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Onboarding Script -->
+    <script>
+      (function () {
+        let currentStep = 1;
+        const totalSteps = 6;
+        let pricingMode = "plus_plus";
+        let starterOption = "starter_demo";
+        let slugCheckTimeout = null;
+        let isSlugValid = false;
+        let redirectTargetUrl = "/";
+
+        const stepItems = document.querySelectorAll(".onboarding-step-item");
+        const stepPanels = document.querySelectorAll(".onboarding-step-panel");
+        const btnPrev = document.getElementById("btnPrevStep");
+        const btnNext = document.getElementById("btnNextStep");
+        const btnSubmit = document.getElementById("btnSubmitOnboarding");
+
+        const inputVenueName = document.getElementById("obVenueName");
+        const inputSlug = document.getElementById("obSlug");
+        const slugStatusNotice = document.getElementById("slugStatusNotice");
+
+        // Helper slugify
+        function generateSlug(text) {
+          return String(text || "")
+            .toLowerCase()
+            .trim()
+            .replace(/[^\w\s-]/g, "")
+            .replace(/[\s_-]+/g, "-")
+            .replace(/^-+|-+$/g, "");
+        }
+
+        // Live slug generator on venue name typing
+        inputVenueName.addEventListener("input", function () {
+          if (!inputSlug.dataset.manualEdit) {
+            inputSlug.value = generateSlug(inputVenueName.value);
+            triggerSlugCheck();
+          }
+        });
+
+        inputSlug.addEventListener("input", function () {
+          inputSlug.dataset.manualEdit = "true";
+          inputSlug.value = generateSlug(inputSlug.value);
+          triggerSlugCheck();
+        });
+
+        function triggerSlugCheck() {
+          clearTimeout(slugCheckTimeout);
+          const slug = inputSlug.value.trim();
+
+          if (slug.length < 3) {
+            slugStatusNotice.className = "onboarding-slug-status is-taken";
+            slugStatusNotice.textContent = "Subdomain minimal 3 karakter.";
+            isSlugValid = false;
+            return;
+          }
+
+          slugStatusNotice.className = "onboarding-slug-status is-checking";
+          slugStatusNotice.textContent = "Memeriksa ketersediaan subdomain...";
+
+          slugCheckTimeout = setTimeout(async function () {
+            try {
+              const res = await fetch(`/api/onboarding/check-slug?slug=${encodeURIComponent(slug)}`);
+              const data = await res.json();
+              if (data && data.available) {
+                slugStatusNotice.className = "onboarding-slug-status is-available";
+                slugStatusNotice.textContent = `✓ Subdomain "${slug}" tersedia!`;
+                isSlugValid = true;
+              } else {
+                slugStatusNotice.className = "onboarding-slug-status is-taken";
+                slugStatusNotice.textContent = data.message || "Subdomain tidak tersedia.";
+                isSlugValid = false;
+              }
+            } catch (_) {
+              // Best effort fallback
+              slugStatusNotice.className = "onboarding-slug-status is-available";
+              slugStatusNotice.textContent = `✓ Subdomain "${slug}" dapat digunakan.`;
+              isSlugValid = true;
+            }
+          }, 350);
+        }
+
+        // Choice cards listener
+        document.querySelectorAll("[data-pricing-mode]").forEach(function (card) {
+          card.addEventListener("click", function () {
+            document.querySelectorAll("[data-pricing-mode]").forEach(function (c) {
+              c.classList.remove("is-selected");
+              c.querySelector(".onboarding-choice-title span:last-child").textContent = "";
+            });
+            card.classList.add("is-selected");
+            card.querySelector(".onboarding-choice-title span:last-child").textContent = "✓";
+            pricingMode = card.dataset.pricingMode;
+          });
+        });
+
+        document.querySelectorAll("[data-starter-option]").forEach(function (card) {
+          card.addEventListener("click", function () {
+            document.querySelectorAll("[data-starter-option]").forEach(function (c) {
+              c.classList.remove("is-selected");
+              c.querySelector(".onboarding-choice-title span:last-child").textContent = "";
+            });
+            card.classList.add("is-selected");
+            card.querySelector(".onboarding-choice-title span:last-child").textContent = "✓";
+            starterOption = card.dataset.starterOption;
+          });
+        });
+
+        function updateStepUI() {
+          stepItems.forEach(function (item) {
+            const stepNum = Number(item.dataset.step);
+            item.classList.remove("is-active", "is-completed");
+            if (stepNum === currentStep) {
+              item.classList.add("is-active");
+            } else if (stepNum < currentStep) {
+              item.classList.add("is-completed");
+            }
+          });
+
+          stepPanels.forEach(function (panel) {
+            panel.classList.remove("is-visible");
+            if (Number(panel.dataset.stepPanel) === currentStep) {
+              panel.classList.add("is-visible");
+            }
+          });
+
+          btnPrev.style.visibility = currentStep === 1 ? "hidden" : "visible";
+
+          if (currentStep === totalSteps) {
+            btnNext.style.display = "none";
+            btnSubmit.style.display = "inline-flex";
+            renderReviewSummary();
+          } else {
+            btnNext.style.display = "inline-flex";
+            btnSubmit.style.display = "none";
+          }
+        }
+
+        function renderReviewSummary() {
+          const container = document.getElementById("onboardingReviewSummary");
+          const venue = inputVenueName.value.trim() || "-";
+          const slug = inputSlug.value.trim() || "-";
+          const cutoff = document.getElementById("obCutoffHour").value + ":00 Pagi";
+          const tax = document.getElementById("obTaxPb1").value + "%";
+          const sc = document.getElementById("obServiceCharge").value + "%";
+          const lcMod = document.getElementById("obModLc").checked ? "Aktif" : "Nonaktif";
+          const terminology = document.getElementById("obTerminology").value;
+          const unitText = terminology === "table" ? "Meja (Table)" : terminology === "booth" ? "VIP Booth" : "Ruangan (Room)";
+
+          container.innerHTML = `
+            <div class="onboarding-review-row">
+              <span class="onboarding-review-key">Nama Venue</span>
+              <span class="onboarding-review-val">${venue}</span>
+            </div>
+            <div class="onboarding-review-row">
+              <span class="onboarding-review-key">Alamat Subdomain</span>
+              <span class="onboarding-review-val" style="color: var(--ob-accent-gold); font-family: monospace;">https://${slug}.harmonicsaas.com</span>
+            </div>
+            <div class="onboarding-review-row">
+              <span class="onboarding-review-key">Jam Cut-Off Akuntansi</span>
+              <span class="onboarding-review-val">${cutoff}</span>
+            </div>
+            <div class="onboarding-review-row">
+              <span class="onboarding-review-key">Pajak PB1 & Service</span>
+              <span class="onboarding-review-val">PB1 ${tax} + Service ${sc} (${pricingMode === "plus_plus" ? "Plus-Plus" : "Nett"})</span>
+            </div>
+            <div class="onboarding-review-row">
+              <span class="onboarding-review-key">Modul LC (Pemandu Lagu)</span>
+              <span class="onboarding-review-val">${lcMod}</span>
+            </div>
+            <div class="onboarding-review-row">
+              <span class="onboarding-review-key">Sebutan Unit Operasional</span>
+              <span class="onboarding-review-val">${unitText}</span>
+            </div>
+            <div class="onboarding-review-row">
+              <span class="onboarding-review-key">Master Data Awal</span>
+              <span class="onboarding-review-val">${starterOption === "starter_demo" ? "4 Unit Starter + 4 Menu Populer" : "Database Bersih"}</span>
+            </div>
+          `;
+        }
+
+        function validateCurrentStep() {
+          if (currentStep === 1) {
+            if (!inputVenueName.value.trim()) {
+              alert("Nama tempat/venue wajib diisi.");
+              inputVenueName.focus();
+              return false;
+            }
+            if (!inputSlug.value.trim() || inputSlug.value.trim().length < 3) {
+              alert("Subdomain minimal 3 karakter.");
+              inputSlug.focus();
+              return false;
+            }
+            if (!isSlugValid) {
+              alert("Harap tunggu verifikasi ketersediaan subdomain.");
+              return false;
+            }
+          }
+          return true;
+        }
+
+        btnNext.addEventListener("click", function () {
+          if (!validateCurrentStep()) return;
+          if (currentStep < totalSteps) {
+            currentStep += 1;
+            updateStepUI();
+          }
+        });
+
+        btnPrev.addEventListener("click", function () {
+          if (currentStep > 1) {
+            currentStep -= 1;
+            updateStepUI();
+          }
+        });
+
+        // Submit form
+        btnSubmit.addEventListener("click", async function () {
+          const ownerName = document.getElementById("obOwnerName").value.trim();
+          const ownerPin = document.getElementById("obOwnerPin").value.trim();
+
+          if (!ownerName) {
+            alert("Nama pemilik / pengelola wajib diisi.");
+            document.getElementById("obOwnerName").focus();
+            return;
+          }
+
+          if (!ownerPin || ownerPin.length < 4) {
+            alert("PIN Owner minimal 4 digit angka.");
+            document.getElementById("obOwnerPin").focus();
+            return;
+          }
+
+          btnSubmit.disabled = true;
+          btnSubmit.textContent = "Menginisialisasi Venue...";
+
+          const terminologyVal = document.getElementById("obTerminology").value;
+          const unitLabel = terminologyVal === "table" ? "Meja" : terminologyVal === "booth" ? "VIP Booth" : "Ruangan";
+          const unitPrefix = terminologyVal === "table" ? "Table" : terminologyVal === "booth" ? "VIP" : "Room";
+
+          const payload = {
+            venue_name: inputVenueName.value.trim(),
+            slug: inputSlug.value.trim(),
+            tagline: document.getElementById("obTagline").value.trim() || "Nightlife Management System",
+            operational: {
+              timezone: document.getElementById("obTimezone").value,
+              cutoff_hour: Number(document.getElementById("obCutoffHour").value) || 10,
+              tax_pb1_percent: Number(document.getElementById("obTaxPb1").value) || 10,
+              service_charge_percent: Number(document.getElementById("obServiceCharge").value) || 5,
+              pricing_mode: pricingMode,
+              grace_period_minutes: Number(document.getElementById("obGracePeriod").value) || 10
+            },
+            modules: {
+              lady_companion: document.getElementById("obModLc").checked,
+              tv_hardware_bridge: document.getElementById("obModTv").checked,
+              kitchen_bar_split_print: document.getElementById("obModKitchenPrint").checked,
+              inventory_tracking: true
+            },
+            terminology: {
+              unit_label: unitLabel,
+              unit_plural: unitLabel,
+              unit_prefix: unitPrefix
+            },
+            branding: {
+              accent_color: "#f5b338"
+            },
+            owner: {
+              name: ownerName,
+              pin: ownerPin
+            },
+            starter_option: starterOption
+          };
+
+          try {
+            const res = await fetch("/api/onboarding/create-tenant", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload)
+            });
+
+            const data = await res.json();
+
+            if (!res.ok || !data.ok) {
+              throw new Error(data.error || "Gagal mendaftarkan venue.");
+            }
+
+            // Success modal
+            redirectTargetUrl = data.redirect_url || `/?tenant=${encodeURIComponent(payload.slug)}`;
+            document.getElementById("successModalVenueName").textContent = payload.venue_name;
+            document.getElementById("successModalUrl").textContent = `https://${payload.slug}.harmonicsaas.com`;
+            document.getElementById("successModalPin").textContent = ownerPin;
+            document.getElementById("onboardingSuccessModal").classList.add("is-open");
+          } catch (err) {
+            alert(err.message || "Terjadi kesalahan saat menginisialisasi venue.");
+            btnSubmit.disabled = false;
+            btnSubmit.textContent = "Inisialisasi & Luncurkan Venue";
+          }
+        });
+
+        document.getElementById("btnLaunchDashboard").addEventListener("click", function () {
+          window.location.href = redirectTargetUrl;
+        });
+
+        // Initialize state
+        updateStepUI();
+      })();
+    </script>
+  </body>
+</html>
