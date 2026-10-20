@@ -6109,7 +6109,7 @@ function requestCancelFnbOrder(orderId) {
     details: [
       ["ID Order", order.order_id || orderId],
       ["Room / Pelanggan", order.room_name || order.customer_name || "-"],
-      ["Status", isPaidOrder ? "Lunas — perlu refund" : "Open / belum ditagihkan"],
+      ["Status", isPaidOrder ? "Lunas  -  perlu refund" : "Open / belum ditagihkan"],
       ["Total", formatCurrency(order.order_total || 0)],
     ],
     field: {
@@ -6205,8 +6205,8 @@ function requestVoidRoomFnbItem(itemData) {
       const sub = q * price;
       const rem = totalQty - q;
       const label = isAll
-        ? `Semua (${q}x) — Potong ${formatCurrency(sub)} (Sisa: 0)`
-        : `${q}x saja — Potong ${formatCurrency(sub)} (Sisa: ${rem}x)`;
+        ? `Semua (${q}x)  -  Potong ${formatCurrency(sub)} (Sisa: 0)`
+        : `${q}x saja  -  Potong ${formatCurrency(sub)} (Sisa: ${rem}x)`;
       qtyOptions.push([String(q), label]);
     }
 
@@ -6296,8 +6296,8 @@ function requestVoidOpenFnbOrderItem(orderItemId, itemMeta = {}) {
       const sub = q * price;
       const rem = totalQty - q;
       const label = isAll
-        ? `Semua (${q}x) — Potong ${formatCurrency(sub)} (Sisa: 0)`
-        : `${q}x saja — Potong ${formatCurrency(sub)} (Sisa: ${rem}x)`;
+        ? `Semua (${q}x)  -  Potong ${formatCurrency(sub)} (Sisa: 0)`
+        : `${q}x saja  -  Potong ${formatCurrency(sub)} (Sisa: ${rem}x)`;
       qtyOptions.push([String(q), label]);
     }
 
@@ -27535,7 +27535,7 @@ function createTvStaticIpGuideRoomReferenceList() {
   const warning = document.createElement("p");
   warning.className = "tv-guide-line";
   warning.innerHTML = "<strong>ATURAN AMAN:</strong> hanya ketik alamat yang berstatus <em>sesuai</em>, atau alamat yang diberikan admin/owner kepada Anda. "
-    + "Alamat berstatus <strong>BENTROK</strong> sudah dipegang perangkat lain — kalau diketik di TV, dua perangkat berebut satu alamat dan TV itu akan terlihat hilang. "
+    + "Alamat berstatus <strong>BENTROK</strong> sudah dipegang perangkat lain  -  kalau diketik di TV, dua perangkat berebut satu alamat dan TV itu akan terlihat hilang. "
     + "Jangan mengganti alamat TV sendiri tanpa dicatat, karena sistem kontrol ruangan menembak alamat yang sama.";
   wrap.appendChild(warning);
 
@@ -27545,10 +27545,10 @@ function createTvStaticIpGuideRoomReferenceList() {
 function tvGuideBlocks() {
   return [
     {
-      title: "1. Sebelum mulai — pastikan ini dulu",
+      title: "1. Sebelum mulai  -  pastikan ini dulu",
       lines: [
         "1) TV menyala dan kabel LAN-nya terpasang di TV dan di switch/router.",
-        "2) Lihat lampu di colokan LAN TV: harus menyala atau berkelip. <strong>Kalau lampunya mati, ini masalah kabel atau port — jangan lanjut mengubah setelan IP, tidak akan berhasil.</strong> Pindahkan kabel ke port lain yang sudah terbukti jalan, atau ganti kabelnya.",
+        "2) Lihat lampu di colokan LAN TV: harus menyala atau berkelip. <strong>Kalau lampunya mati, ini masalah kabel atau port  -  jangan lanjut mengubah setelan IP, tidak akan berhasil.</strong> Pindahkan kabel ke port lain yang sudah terbukti jalan, atau ganti kabelnya.",
         "3) Kalau TV baru dinyalakan, tunggu 1-2 menit sebelum menilai apa pun.",
         "4) Catat IP TV yang sekarang. Untuk TV yang baru pertama kali dikerjakan, tanyakan ke admin jaringan.",
       ],
@@ -27557,16 +27557,16 @@ function tvGuideBlocks() {
     {
       title: "4. Urutan pengisian yang benar",
       lines: [
-        "Layar 1 — <strong>Alamat IP</strong>: pakai nilai dari tabel ruangan di atas, jangan dikira-kira.",
-        "Layar 2 — <strong>Gerbang</strong>: 192.168.1.1",
-        "Layar 3 — <strong>Panjang awalan jaringan</strong>: 24",
-        "Layar 4 — <strong>DNS 1</strong>: 8.8.8.8",
-        "Layar 5 — <strong>DNS 2</strong>: 192.168.1.1",
-        "Menghapus isi kolom: kursor harus di akhir isian, baru hapus satu per satu. Pastikan kolom benar-benar kosong sebelum mengetik angka baru — kalau tidak, nilai baru akan menempel di nilai lama dan TV menolak menyimpan.",
+        "Layar 1  -  <strong>Alamat IP</strong>: pakai nilai dari tabel ruangan di atas, jangan dikira-kira.",
+        "Layar 2  -  <strong>Gerbang</strong>: 192.168.1.1",
+        "Layar 3  -  <strong>Panjang awalan jaringan</strong>: 24",
+        "Layar 4  -  <strong>DNS 1</strong>: 8.8.8.8",
+        "Layar 5  -  <strong>DNS 2</strong>: 192.168.1.1",
+        "Menghapus isi kolom: kursor harus di akhir isian, baru hapus satu per satu. Pastikan kolom benar-benar kosong sebelum mengetik angka baru  -  kalau tidak, nilai baru akan menempel di nilai lama dan TV menolak menyimpan.",
       ],
     },
     {
-      title: "5. Setelah kolom terakhir — wajib diperiksa",
+      title: "5. Setelah kolom terakhir  -  wajib diperiksa",
       lines: [
         "1) TV akan menyambung ulang dan memakai alamat baru. Tunggu sampai layar jaringan tenang.",
         "2) Bukti pertama: di halaman yang sama, baris <strong>Setelan IP</strong> harus sudah tertulis <strong>Statik</strong> (bukan DHCP).",
@@ -27576,7 +27576,7 @@ function tvGuideBlocks() {
       ],
     },
     {
-      title: "6. Kalau gagal — gejala dan tindakan",
+      title: "6. Kalau gagal  -  gejala dan tindakan",
       lines: [
         "<strong>Muncul pesan \"Setelan IP tidak valid\"</strong>: kabel belum punya sambungan (lihat langkah 1), atau ada salah ketik di Alamat IP / Gerbang / awalan. Periksa tiap angka.",
         "<strong>TV hilang setelah disimpan</strong>: alamat itu sedang dipakai perangkat lain. Laporkan ke admin jaringan; jangan mengubah-ubah alamat sendiri tanpa dicatat, karena sistem akan menembak alamat yang salah.",
@@ -27589,10 +27589,10 @@ function tvGuideBlocks() {
       title: "7. Cara memeriksa dari komputer (untuk yang mengerjakan pakai laptop)",
       lines: [
         "1) Hubungkan TV: <code>C:\\platform-tools\\adb.exe connect &lt;alamat IP&gt;:5555</code>",
-        "2) Cek statusnya: <code>C:\\platform-tools\\adb.exe devices -l</code> — harus tertulis <code>device</code>. Kalau <code>unauthorized</code>, lihat langkah 8.",
+        "2) Cek statusnya: <code>C:\\platform-tools\\adb.exe devices -l</code>  -  harus tertulis <code>device</code>. Kalau <code>unauthorized</code>, lihat langkah 8.",
         "3) Mengemudikan layar TV dari laptop: <code>adb shell input keyevent 19</code> (atas), <code>20</code> (bawah), <code>21</code> (kiri), <code>22</code> (kanan), <code>23</code> (OK), <code>4</code> (kembali).",
         "4) Mengisi kolom: <code>adb shell input text \"192.168.1.1xx\"</code> lalu <code>adb shell input keyevent 66</code> (ENTER = tombol lanjut).",
-        "5) <strong>Jangan pakai tombol OK (keyevent 23) untuk maju saat keyboard layar terbuka</strong> — fokus sedang ada di keyboard, dan yang terketik justru huruf. Selalu pakai ENTER (66).",
+        "5) <strong>Jangan pakai tombol OK (keyevent 23) untuk maju saat keyboard layar terbuka</strong>  -  fokus sedang ada di keyboard, dan yang terketik justru huruf. Selalu pakai ENTER (66).",
         "6) Menghapus isi kolom hanya bekerja saat keyboard layar terbuka: kursor ke akhir dulu, baru hapus. Kalau keyboard tertutup, tombol hapus bocor ke halaman dan halaman bisa keluar sendiri.",
         "7) Keyboard layar tidak pernah muncul di pemeriksaan otomatis layar TV, jadi kalau ragu posisi fokus, ambil tangkapan layar: <code>adb exec-out screencap -p &gt; layar.png</code>",
       ],
@@ -27607,27 +27607,27 @@ function tvGuideBlocks() {
         "4) Dari komputer: <code>C:\\platform-tools\\adb.exe connect &lt;alamat IP&gt;:5555</code>",
         "5) Lihat layar TV: akan muncul pertanyaan <strong>\"Izinkan penelusuran USB?\"</strong>. Pilih <strong>OK/Allow</strong>, dan centang \"selalu izinkan dari komputer ini\".",
         "6) Cek dari komputer: <code>adb devices -l</code> harus berubah dari <code>unauthorized</code> menjadi <code>device</code>.",
-        "Kalau dialog tidak muncul: matikan lalu nyalakan lagi Penelusuran USB di TV, lalu coba sambung ulang dari komputer — atau dari aplikasi, tekan tombol Minta Izin ADB pada baris ruangan itu (lihat langkah 8b).",
+        "Kalau dialog tidak muncul: matikan lalu nyalakan lagi Penelusuran USB di TV, lalu coba sambung ulang dari komputer  -  atau dari aplikasi, tekan tombol Minta Izin ADB pada baris ruangan itu (lihat langkah 8b).",
       ],
     },
     {
-      title: "8b. TROUBLESHOOTING ADB — TV menyala tapi sistem bilang \"belum tersambung\"",
+      title: "8b. TROUBLESHOOTING ADB  -  TV menyala tapi sistem bilang \"belum tersambung\"",
       lines: [
         "Gejalanya begini: TV menyala normal, gambar jalan, bahkan bisa di-ping dari komputer, TETAPI di aplikasi POS tombol <strong>Uji ADB</strong> menjawab <strong>belum tersambung</strong> dan ruangan itu diberi tanda peringatan kuning.",
         "Artinya: yang mati bukan internet TV, melainkan <strong>layanan ADB</strong> di TV (port 5555 tertutup). Selama itu mati, sistem tidak bisa menyalakan/mematikan TV ruangan ini dan peringatan sisa waktu tidak akan muncul di layarnya.",
-        "0) <strong>CARA PALING MUDAH — pakai tombolnya:</strong> di aplikasi, baris ruangan itu tekan <strong>Minta Izin ADB</strong> (PIN sama seperti tombol Kontrol TV lain). Pemicunya dikirim ke TV dan aplikasi menunggu 60 detik. Kalau di layar TV muncul pertanyaan \"Izinkan penelusuran USB?\", tekan OK/Allow dan centang \"selalu izinkan dari komputer ini\". Aplikasi akan memberi tahu begitu izinnya masuk. Kalau setelah 60 detik pertanyaannya tidak muncul juga, lanjutkan langkah 1 di bawah.",
+        "0) <strong>CARA PALING MUDAH  -  pakai tombolnya:</strong> di aplikasi, baris ruangan itu tekan <strong>Minta Izin ADB</strong> (PIN sama seperti tombol Kontrol TV lain). Pemicunya dikirim ke TV dan aplikasi menunggu 60 detik. Kalau di layar TV muncul pertanyaan \"Izinkan penelusuran USB?\", tekan OK/Allow dan centang \"selalu izinkan dari komputer ini\". Aplikasi akan memberi tahu begitu izinnya masuk. Kalau setelah 60 detik pertanyaannya tidak muncul juga, lanjutkan langkah 1 di bawah.",
         "Urutan pemeriksaan, dari yang paling sering ke yang jarang:",
         "1) <strong>Periksa dari komputer dulu</strong>, jangan menebak: <code>C:\\platform-tools\\adb.exe devices</code>. Kalau alamat ruangan itu tidak muncul atau tertulis <code>offline</code>, lanjut ke langkah 2 (perangkatnya memang belum menerima).",
         "2) <strong>ADB-nya mungkin belum dinyalakan di TV itu.</strong> Di TV: Setelan -> Sistem -> <strong>Opsi pengembang</strong> -> nyalakan <strong>Penelusuran USB / ADB debugging</strong> dan <strong>Network debugging / ADB melalui jaringan</strong>. Kalau menu Opsi pengembang belum ada, kerjakan langkah 8 (tekan Build 7 kali).",
         "3) <strong>TV baru saja dimatikan dari colokan/listrik.</strong> Setelan ADB hilang setiap TV dimatikan total, jadi harus dinyalakan ulang di menu Opsi pengembang. Karena itu TV yang sudah beres sebaiknya tidak dilepas dari listrik, cukup dimatikan pakai remote.",
         "4) <strong>Coba sambung ulang dari komputer:</strong> <code>adb connect &lt;alamat IP&gt;:5555</code>. Kalau menjawab <code>connected to ...</code>, tekan Uji ADB lagi di aplikasi.",
         "5) <strong>Muncul pertanyaan \"Izinkan penelusuran USB?\" di layar TV:</strong> pilih OK/Allow dan centang \"selalu izinkan dari komputer ini\". Kalau dialog ini tidak muncul, matikan lalu nyalakan lagi Penelusuran USB di TV, lalu ulangi langkah 4.",
-        "6) <strong>Sudah semua tapi tetap gagal:</strong> TV mungkin perlu di-restart (cabut listrik 1 menit, pasang lagi) lalu ulangi dari langkah 2. Kalau masih gagal, catat nomor ruangan dan laporkan ke admin/owner — jangan mengubah alamat IP TV untuk \"mencoba-coba\", karena alamat itu dipakai sistem.",
+        "6) <strong>Sudah semua tapi tetap gagal:</strong> TV mungkin perlu di-restart (cabut listrik 1 menit, pasang lagi) lalu ulangi dari langkah 2. Kalau masih gagal, catat nomor ruangan dan laporkan ke admin/owner  -  jangan mengubah alamat IP TV untuk \"mencoba-coba\", karena alamat itu dipakai sistem.",
         "<strong>Setelah berhasil, wajib dibuktikan:</strong> kartu ruangan di aplikasi harus berubah menjadi <strong>TERSAMBUNG</strong>, dan barulah tombol Pasang Peringatan muncul untuk ruangan itu.",
       ],
     },
     {
-      title: "9. Batas pekerjaan teknisi — kapan harus berhenti dan menghubungi admin/owner",
+      title: "9. Batas pekerjaan teknisi  -  kapan harus berhenti dan menghubungi admin/owner",
       lines: [
         "Lampu LAN mati setelah ganti kabel dan ganti port.",
         "Alamat IP yang ditentukan ternyata sudah dipakai perangkat lain (terlihat dari MAC di <code>arp -a</code> yang bukan 74-81-9a / 9c-53-85).",
@@ -27866,7 +27866,7 @@ function tvGuidePrintViaDownload(html) {
   a.click();
   a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 30000);
-  showInlineNotice("Jendela cetak diblokir. Berkas panduan diunduh — buka berkas itu lalu tekan Ctrl+P untuk mencetak.", "warning");
+  showInlineNotice("Jendela cetak diblokir. Berkas panduan diunduh  -  buka berkas itu lalu tekan Ctrl+P untuk mencetak.", "warning");
 }
 
 function printTvControlGuide() {
@@ -35688,7 +35688,7 @@ function createRoomSessionIdempotencyKey(roomId, durationMinutes) {
   ].join("-");
 }
 
-// Idempotency key untuk payAndStartSession — di-cache per roomId agar
+// Idempotency key untuk payAndStartSession  -  di-cache per roomId agar
 // retry dalam satu sesi pembayaran menggunakan key yang SAMA, sehingga
 // server bisa mendeteksi duplikat dan tidak membuat transaksi ganda.
 const _payAndStartIdempotencyKeys = {};
@@ -38832,7 +38832,7 @@ function renderLoginScreen() {
   onboardingLink.style.marginTop = "8px";
   onboardingLink.innerHTML = `
     <a href="onboarding.html" class="operator-onboarding-link" style="color: var(--tenant-accent, #e2b85c); font-size: 0.82rem; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s ease;">
-      <span>✨ Daftarkan Venue Baru (SaaS Onboarding)</span>
+      <span>✨ Daftarkan Venue Baru (Setup Wizard)</span>
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
     </a>
   `;
@@ -40670,7 +40670,7 @@ async function handleRoomAction(event) {
   }
 
   if (action === "toggle-lc-checkbox") {
-    // handled inline by onchange — no-op
+    // handled inline by onchange  -  no-op
     return;
   }
 

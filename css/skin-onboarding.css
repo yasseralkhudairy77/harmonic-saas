@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HARMONIC SAAS - MULTI-TENANT ONBOARDING WIZARD STYLESHEET
+   HARMONIC NIGHTLIFE SYSTEM - VENUE ONBOARDING WIZARD STYLESHEET
    Luxury Executive Dark Mode Theme (Dribbble AYDesign Aesthetic)
    Palette: Executive Charcoal (#08090c / #111317), Warm Amber (#f5b338 / #e2b85c)
    Zero Em Dashes, High Contrast, Touch Ergonomic, WCAG AA Compliant
@@ -56,6 +56,7 @@ body.onboarding-body {
   gap: 16px;
   padding-bottom: 12px;
   border-bottom: 1px solid var(--ob-border-subtle);
+  flex-wrap: wrap;
 }
 
 .onboarding-brand {
@@ -90,6 +91,35 @@ body.onboarding-body {
   color: var(--ob-accent-gold);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+.onboarding-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.onboarding-pdf-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 179, 56, 0.4);
+  background: rgba(245, 179, 56, 0.1);
+  color: var(--ob-accent-gold);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.onboarding-pdf-btn:hover {
+  background: rgba(245, 179, 56, 0.2);
+  border-color: var(--ob-accent-gold);
+  color: #ffffff;
+  box-shadow: 0 0 16px rgba(245, 179, 56, 0.25);
 }
 
 .onboarding-exit-btn {

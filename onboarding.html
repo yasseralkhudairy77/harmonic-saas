@@ -3,28 +3,38 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pendaftaran Venue Baru - Harmonic SaaS Onboarding Wizard</title>
+    <title>Pendaftaran Venue Baru - Harmonic Setup Wizard</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="css/skin-onboarding.css?v=saas-v1" />
+    <link rel="stylesheet" href="css/skin-onboarding.css?v=v2" />
   </head>
   <body class="onboarding-body">
     <div class="onboarding-viewport">
       <!-- Header -->
       <header class="onboarding-header">
         <div class="onboarding-brand">
-          <img src="assets/brand/harmonic-logo-header.png" alt="Harmonic SaaS" class="onboarding-brand-logo" />
+          <img src="assets/brand/harmonic-logo-header.png" alt="Harmonic Nightlife System" class="onboarding-brand-logo" />
           <div class="onboarding-brand-meta">
-            <h1 class="onboarding-brand-title">Harmonic Nightlife SaaS</h1>
-            <span class="onboarding-brand-badge">Venue Onboarding Wizard</span>
+            <h1 class="onboarding-brand-title">Harmonic Nightlife System</h1>
+            <span class="onboarding-brand-badge">Venue Setup Wizard</span>
           </div>
         </div>
-        <a href="index.html" class="onboarding-exit-btn">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12"></line>
-            <polyline points="12 19 5 12 12 5"></polyline>
-          </svg>
-          Kembali ke Terminal Kasir
-        </a>
+        <div class="onboarding-header-actions">
+          <a href="Panduan_Instalasi_Awal_Harmonic.pdf" download class="onboarding-pdf-btn" title="Unduh Dokumen Panduan Instalasi & Setup Lengkap (.PDF)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Unduh Panduan PDF</span>
+          </a>
+          <a href="index.html" class="onboarding-exit-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Kembali ke Terminal Kasir
+          </a>
+        </div>
       </header>
 
       <!-- Stepper Progress Indicator -->
@@ -76,11 +86,11 @@
 
             <div class="onboarding-form-group span-full">
               <label class="onboarding-label" for="obSlug">
-                Subdomain Sistem SaaS <span class="onboarding-label-hint">Alamat URL Web Venue Anda</span>
+                Subdomain Web Venue <span class="onboarding-label-hint">Alamat URL Web Venue Anda</span>
               </label>
               <div class="onboarding-slug-input-wrap">
-                <input type="text" id="obSlug" class="onboarding-slug-input" placeholder="golden-ktv" required />
-                <span class="onboarding-slug-suffix">.harmonicsaas.com</span>
+                <input type="text" id="obSlug" class="onboarding-slug-input" placeholder="vortex-club-ktv" required />
+                <span class="onboarding-slug-suffix">.harmonicpos.com</span>
               </div>
               <div id="slugStatusNotice" class="onboarding-slug-status"></div>
             </div>
@@ -534,7 +544,7 @@
             </div>
             <div class="onboarding-review-row">
               <span class="onboarding-review-key">Alamat Subdomain</span>
-              <span class="onboarding-review-val" style="color: var(--ob-accent-gold); font-family: monospace;">https://${slug}.harmonicsaas.com</span>
+              <span class="onboarding-review-val" style="color: var(--ob-accent-gold); font-family: monospace;">https://${slug}.harmonicpos.com</span>
             </div>
             <div class="onboarding-review-row">
               <span class="onboarding-review-key">Jam Cut-Off Akuntansi</span>
@@ -667,7 +677,7 @@
             // Success modal
             redirectTargetUrl = data.redirect_url || `/?tenant=${encodeURIComponent(payload.slug)}`;
             document.getElementById("successModalVenueName").textContent = payload.venue_name;
-            document.getElementById("successModalUrl").textContent = `https://${payload.slug}.harmonicsaas.com`;
+            document.getElementById("successModalUrl").textContent = `https://${payload.slug}.harmonicpos.com`;
             document.getElementById("successModalPin").textContent = ownerPin;
             document.getElementById("onboardingSuccessModal").classList.add("is-open");
           } catch (err) {

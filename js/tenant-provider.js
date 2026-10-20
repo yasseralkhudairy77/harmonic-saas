@@ -1,5 +1,5 @@
 /**
- * HARMONIC SAAS - TENANT CONFIGURATION & WHITE-LABEL ENGINE
+ * HARMONIC NIGHTLIFE SYSTEM - TENANT CONFIGURATION & WHITE-LABEL ENGINE
  * Module: TenantProvider
  * 
  * Provides tenant discovery, profile resolution, dynamic CSS theme injection,
@@ -172,7 +172,7 @@
       }
     } catch (_) {}
 
-    // 3. Subdomain extraction (e.g. golden-ktv.harmonicsaas.com or golden-ktv.up.railway.app)
+    // 3. Subdomain extraction (e.g. golden-ktv.harmonicpos.com or golden-ktv.up.railway.app)
     try {
       if (typeof window !== "undefined" && window.location && window.location.hostname) {
         const host = window.location.hostname;
